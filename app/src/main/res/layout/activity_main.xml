@@ -36,7 +36,7 @@
             app:civ_border_color="#fff"
             app:civ_border_width="2dp"
             app:civ_background_color="#fff"
-
+            android:visibility="gone"
             />
 
 
@@ -48,9 +48,10 @@
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="0dp"
-
         android:background="@drawable/round_white"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        >
 
         <TextView
             android:id="@+id/welcome_text"
@@ -181,7 +182,6 @@
         android:layout_height="match_parent"
         android:id="@+id/loading_container"
         android:background="#d9000000"
-        android:visibility="gone"
         >
 
         <ProgressBar
