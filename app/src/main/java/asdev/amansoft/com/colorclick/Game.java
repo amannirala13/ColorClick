@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -45,6 +46,10 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+
+
+
 
         //Initialising variables
         timeBar = findViewById(R.id.time_bar);
@@ -140,9 +145,11 @@ public class Game extends AppCompatActivity {
 
     //When the Game ends
     private void endGame() {
-        if(score>worldHighestScore)
-        mDatabase.child("World Highest").setValue(score);
-        Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
+        if(score>worldHighestScore) {
+            mDatabase.child("World Leader").setValue(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            mDatabase.child("World Highest").setValue(score);
+        }
+       // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
         GAME_STATE = 0;
         timer.cancel();
         Intent endGameIntent = new Intent(Game.this, MainActivity.class);
@@ -179,7 +186,7 @@ public class Game extends AppCompatActivity {
         timeBar.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         GAME_STATE=1;
         vibrate();
-        Toast.makeText(this, "Game Started", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Game Started", Toast.LENGTH_SHORT).show();
 
         final Random R_COLOR = new Random();
         final Random R_NAME = new Random();
@@ -222,7 +229,7 @@ public class Game extends AppCompatActivity {
 
             public void onFinish() {
 
-                Toast.makeText(Game.this, "Oops! Timer Finished", Toast.LENGTH_SHORT).show();
+          //      Toast.makeText(Game.this, "Oops! Timer Finished", Toast.LENGTH_SHORT).show();
                endGame();
             }
 

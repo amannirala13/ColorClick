@@ -3,14 +3,16 @@ package asdev.amansoft.com.colorclick;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.google.firebase.database.FirebaseDatabase;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -25,6 +27,7 @@ public class SplashScreen extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash_screen);
         Fabric.with(this, new Crashlytics());
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
 
      /*   new Handler().postDelayed(new Runnable() {
@@ -51,7 +54,10 @@ public class SplashScreen extends AppCompatActivity {
                 if (new check().isValidUser()) {
 
                     if (isFirstRun()) {
-                        //ToDO >> Trigger First Run Activity
+                        Intent MainActivityIntent = new Intent(SplashScreen.this, FirstRun.class);
+                        startActivity(MainActivityIntent);
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        finish();
                     } else {
                         Intent MainActivityIntent = new Intent(SplashScreen.this, MainActivity.class);
                         startActivity(MainActivityIntent);
