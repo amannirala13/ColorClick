@@ -27,39 +27,48 @@ public class SplashScreen extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
 
 
+     /*   new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent MainActivityIntent = new Intent(SplashScreen.this, MainActivity.class);
+                startActivity(MainActivityIntent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+
+            }
+        },SCREEN_TIME_OUT);
+
+*/
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(new check().isValidUser())
-        {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (new check().isValidUser()) {
 
                     if (isFirstRun()) {
                         //ToDO >> Trigger First Run Activity
                     } else {
-                        Intent MainActivityIntent =new Intent(SplashScreen.this, MainActivity.class);
+                        Intent MainActivityIntent = new Intent(SplashScreen.this, MainActivity.class);
                         startActivity(MainActivityIntent);
                         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         finish();
                     }
 
 
-                }
-            }, SCREEN_TIME_OUT);
-        }
-        else
-        {
-            Toast.makeText(this, "Sign in First", Toast.LENGTH_SHORT).show();
-            Intent MainActivityIntent =new Intent(SplashScreen.this, signin.class);
-            startActivity(MainActivityIntent);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            finish();
+                } else {
+                    Intent MainActivityIntent = new Intent(SplashScreen.this, signin.class);
+                    startActivity(MainActivityIntent);
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    finish();
 
-        }
+                }
+            }
+        }, SCREEN_TIME_OUT);
     }
 
     //Checks if the App was run fist time or not

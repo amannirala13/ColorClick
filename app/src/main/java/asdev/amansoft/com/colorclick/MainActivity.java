@@ -1,6 +1,7 @@
 package asdev.amansoft.com.colorclick;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,18 +22,21 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private TextView worldsHighestScoreText;
     private String worldsHighestScore;
-    private RelativeLayout loadingContainer;
+    private RelativeLayout loadingContainer, MainActivityScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MainActivityScreen = findViewById(R.id.main_activity_screen);
         playButton = findViewById(R.id.play_button);
         worldsHighestScoreText = findViewById(R.id.world_highest_score);
         loadingContainer = findViewById(R.id.loading_container);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        
+        startBackgroundAnimation();
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void startBackgroundAnimation() {
+
+        AnimationDrawable backgroundAnim = (AnimationDrawable) MainActivityScreen.getBackground();
+        backgroundAnim.setEnterFadeDuration(1500);
+        backgroundAnim.setExitFadeDuration(3000);
+        backgroundAnim.start();
     }
 
     @Override
