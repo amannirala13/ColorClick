@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/blue_black_gradient"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashScreen">
+
+<TextView
+    android:layout_centerInParent="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="COLOR CLICK \n Early Access \n V1.0"
+    android:textAlignment="center"
+    android:textSize="40sp"
+    android:textStyle="bold"
+    android:textColor="#fff"
+    />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AS DEV Production"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_margin="15dp"
+        />
+
+
+</RelativeLayout>

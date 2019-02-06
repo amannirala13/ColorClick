@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/blue_black_gradient"
+    android:layout_height="match_parent"
+    tools:context=".Game">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/score_container"
+    >
+    <TextView
+        android:id="@+id/score_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:text="Score :"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_centerInParent="true"
+        android:textColor="#fff"
+        />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_toRightOf="@+id/score_text"
+        android:text="0"
+        android:textColor="#fff"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/high_score_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="High Score :"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@+id/high_score"
+        android:layout_centerInParent="true"
+        android:textColor="#fff"
+        />
+
+    <TextView
+        android:id="@+id/high_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:text="0"
+        android:textColor="#fff"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
+
+<LinearLayout
+    android:id="@+id/timer_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@id/score_container"
+  android:layout_marginVertical="15dp"
+    android:layout_marginHorizontal="15dp"
+    android:layout_centerInParent="true"
+    >
+    <TextView
+        android:id="@+id/time_text"
+        android:text="0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+
+        />
+
+    <ProgressBar
+        android:id="@+id/time_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progress="100"
+        android:layout_marginHorizontal="15dp"
+        />
+
+
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/challenge_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/timer_container"
+        android:layout_above="@id/reb_blue_button_container"
+        android:paddingTop="28dp"
+        android:text="Ready!"
+        android:textStyle="bold"
+        android:textSize="60dp"
+        android:textColor="@color/colorAccent"
+        />
+
+
+        <LinearLayout
+            android:layout_above="@id/green_yellow_button_container"
+            android:id="@+id/reb_blue_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            >
+            <Button
+                android:id="@+id/red_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="#FF1E1E"
+                android:text="RED"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/blue_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="#4169E1"
+                android:text="BLUE"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/green_yellow_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            >
+
+            <Button
+                android:id="@+id/green_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:background="#00BF00"
+                android:text="GREEN"
+                android:textColor="@color/colorAccent"
+                android:layout_below="@+id/red_button"
+                android:layout_centerInParent="true"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/yellow_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="#FFBF00"
+                android:text="YELLOW"
+                android:layout_toEndOf="@id/green_button"
+                android:textColor="@color/colorAccent"
+                android:layout_below="@+id/blue_button"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/green_button"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
