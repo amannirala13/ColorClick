@@ -2,6 +2,7 @@ package asdev.amansoft.com.colorclick;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -56,6 +59,12 @@ public class signin extends AppCompatActivity {
         continureBtn = findViewById(R.id.continue_button);
         signOutBtn = findViewById(R.id.signout_button);
 
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() { YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container)); }},250);
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.web_client_id))
                 .requestEmail()
@@ -66,6 +75,9 @@ public class signin extends AppCompatActivity {
         googleSigninButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() { YoYo.with(Techniques.SlideOutDown).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container)); }},200);
                 signIn();
             }
         });
@@ -75,6 +87,7 @@ public class signin extends AppCompatActivity {
         continureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 firebaseAuthWithGoogle(mAccount);
             }
         });
@@ -130,8 +143,8 @@ public class signin extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Intent MainAvtivityIntent = new Intent(signin.this, MainActivity.class);
-                                startActivity(MainAvtivityIntent);
+                                Intent MainActivityIntent = new Intent(signin.this, MainActivity.class);
+                                startActivity(MainActivityIntent);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Snackbar message = Snackbar.make(findViewById(R.id.signin_screen),"Oops! Something went wrong, not able to sign you up",Snackbar.LENGTH_LONG);
@@ -144,6 +157,15 @@ public class signin extends AppCompatActivity {
         }
 
     private void updateSignedInUI() {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
+
+            }
+        },200);
 
         Picasso.get().load(mAccount.getPhotoUrl().toString()).into(profilePic);
         profileName.setText(mAccount.getDisplayName());
@@ -159,14 +181,28 @@ public class signin extends AppCompatActivity {
 
     private void updateSignedOutUI() {
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        profilePic.setVisibility(View.GONE);
-        profileName.setVisibility(View.GONE);
-        continureBtn.setVisibility(View.GONE);
-        signOutBtn.setVisibility(View.GONE);
+                YoYo.with(Techniques.SlideOutDown).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
 
+            }
+        },200);
 
-        googleSigninButton.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
+                profilePic.setVisibility(View.GONE);
+                profileName.setVisibility(View.GONE);
+                continureBtn.setVisibility(View.GONE);
+                signOutBtn.setVisibility(View.GONE);
+                googleSigninButton.setVisibility(View.VISIBLE);
+
+            }
+        },850);
+
 
     }
 }

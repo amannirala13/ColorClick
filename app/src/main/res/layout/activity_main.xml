@@ -34,8 +34,8 @@
             android:layout_above="@id/main_container"
             android:layout_marginBottom="15dp"
             app:civ_border="true"
-            app:civ_border_color="#fff"
-            app:civ_border_width="2dp"
+            app:civ_border_color="#88ffffff"
+            app:civ_border_width="3.5dp"
             app:civ_background_color="#fff"
             android:visibility="gone"
             />

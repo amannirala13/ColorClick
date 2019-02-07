@@ -113,7 +113,6 @@
         android:layout_above="@id/reb_blue_button_container"
         android:paddingTop="28dp"
         android:text="Ready!"
-        android:textStyle="bold"
         android:textSize="60dp"
         android:textColor="@color/colorAccent"
         />
