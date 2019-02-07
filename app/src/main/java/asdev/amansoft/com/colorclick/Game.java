@@ -156,18 +156,27 @@ public class Game extends AppCompatActivity {
 
         StopPointFX();
         StopGameTimerFX();
+        timer.cancel();
+        PlayLooseFX();
         if(score>worldHighestScore) {
             mDatabase.child("World Leader").setValue(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             mDatabase.child("World Highest").setValue(score);
+            Intent endGameIntent = new Intent(Game.this, MainActivity.class);
+            endGameIntent.putExtra("SCORE", score);
+            startActivity(endGameIntent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
         }
        // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
        // GAME_STATE = 0;
-        timer.cancel();
-        PlayLooseFX();
-        Intent endGameIntent = new Intent(Game.this, MainActivity.class);
-        startActivity(endGameIntent);
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        finish();
+
+        else {
+            Intent endGameIntent = new Intent(Game.this, ShowScore.class);
+            endGameIntent.putExtra("SCORE", score);
+            startActivity(endGameIntent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
+        }
     }
 
     //OnStop

@@ -127,6 +127,7 @@ public class signin extends AppCompatActivity {
                 // ...
                 Snackbar message = Snackbar.make(findViewById(R.id.signin_screen),"Oops! Something went wrong, not able to sign you up",Snackbar.LENGTH_LONG);
                 message.show();
+                YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
             }
         }
 

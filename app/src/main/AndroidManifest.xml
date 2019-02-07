@@ -7,12 +7,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/color_click_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_color_click_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FirstRun"></activity>
+        <activity android:name=".ShowScore"></activity>
+        <activity android:name=".FirstRun" />
         <activity
             android:name=".signin"
             android:screenOrientation="portrait" />
