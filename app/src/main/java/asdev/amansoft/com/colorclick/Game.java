@@ -3,6 +3,7 @@ package asdev.amansoft.com.colorclick;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,8 @@ public class Game extends AppCompatActivity {
     private int score =0;
     private Vibrator newChallengePing;
     private long worldHighestScore;
+    private MediaPlayer gameTimerFX , timesUPFX, pointFx, looseFX;
+    private final static int MAX_VOLUME = 100;
 
     private DatabaseReference mDatabase;
 
@@ -65,6 +69,8 @@ public class Game extends AppCompatActivity {
         worldHighestScore = Long.parseLong(getIntent().getStringExtra("WORLD_HIGHEST"));
         highestScoretext.setText(getIntent().getStringExtra("WORLD_HIGHEST"));
 
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
@@ -89,7 +95,7 @@ public class Game extends AppCompatActivity {
         },2500);
 
 
-        createTimer(3000);
+        createTimer(2000);
 
 
 
@@ -131,8 +137,10 @@ public class Game extends AppCompatActivity {
     //Check the answer if it is correct or not
     private void checkAnswer(int input) {
 
+        StopGameTimerFX();
         if(answer==input)
         {
+            PlayPointFX();
             ++score;
             scoreText.setText(Integer.toString(score));
             startGame();
@@ -145,13 +153,17 @@ public class Game extends AppCompatActivity {
 
     //When the Game ends
     private void endGame() {
+
+        StopPointFX();
+        StopGameTimerFX();
         if(score>worldHighestScore) {
             mDatabase.child("World Leader").setValue(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             mDatabase.child("World Highest").setValue(score);
         }
        // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
-        GAME_STATE = 0;
+       // GAME_STATE = 0;
         timer.cancel();
+        PlayLooseFX();
         Intent endGameIntent = new Intent(Game.this, MainActivity.class);
         startActivity(endGameIntent);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -163,21 +175,21 @@ public class Game extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
        // timer.onFinish();
-        timer.cancel();
+       // endGame();
     }
 
     //OnDestroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timer.cancel();
+        //endGame();
     }
 
     //OnPause
     @Override
     protected void onPause() {
         super.onPause();
-        timer.cancel();
+        endGame();
     }
 
     //Starts the game
@@ -185,7 +197,8 @@ public class Game extends AppCompatActivity {
         timeText.setTextColor(Color.WHITE);
         timeBar.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         GAME_STATE=1;
-        vibrate();
+       // vibrate();
+        PlayGameTimerFX();
       //  Toast.makeText(this, "Game Started", Toast.LENGTH_SHORT).show();
 
         final Random R_COLOR = new Random();
@@ -208,7 +221,7 @@ public class Game extends AppCompatActivity {
     //Starts the Game timer
     private void starttimer()
     {
-       timer.start();
+        timer.start();
     }
 
     //Creates the Game Timer
@@ -218,19 +231,32 @@ public class Game extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) millisUntilFinished % 60000 / 1000;
-                double percent = (seconds / 2.0) * 100.0;
-                if (seconds<=1) {
+                double percent = (seconds+1 / 2.0) * 100.0;
+                if ((seconds+1)<=1) {
                     timeBar.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                     timeText.setTextColor(Color.RED);
                 }
-                timeText.setText(Integer.toString(seconds));
+                timeText.setText(Integer.toString(seconds+1));
                 timeBar.setProgress((int) percent);
             }
 
             public void onFinish() {
 
           //      Toast.makeText(Game.this, "Oops! Timer Finished", Toast.LENGTH_SHORT).show();
-               endGame();
+                StopGameTimerFX();
+                timeText.setText("0");
+                timeBar.setProgress(0);
+                GAME_STATE=0;
+
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        endGame();
+                    }
+                },350);
+
             }
 
         };
@@ -245,5 +271,52 @@ public class Game extends AppCompatActivity {
             newChallengePing.vibrate(100);
         }
     }
+
+
+    private void PlayGameTimerFX()
+    {
+        gameTimerFX = MediaPlayer.create(this, R.raw.game_timer);
+        gameTimerFX.start();
+    }
+
+    private void StopGameTimerFX()
+    {
+        if(gameTimerFX != null)
+        gameTimerFX.reset();
+    }
+
+    private void PlayPointFX()
+    {
+        pointFx = MediaPlayer.create(this, R.raw.point);
+        pointFx.start();
+        final float volume = (float) (1 - (Math.log(MAX_VOLUME - 30) / Math.log(MAX_VOLUME)));
+        pointFx.setVolume(volume, volume);
+        pointFx.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                StopPointFX();
+            }
+        });
+    }
+
+    private void StopPointFX()
+    {
+        if(pointFx !=null)
+        pointFx.reset();
+    }
+
+
+    private void PlayLooseFX()
+    {
+        looseFX = MediaPlayer.create(this, R.raw.loose);
+        looseFX.start();
+        looseFX.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                looseFX.reset();
+            }
+        });
+    }
+
 
     }
