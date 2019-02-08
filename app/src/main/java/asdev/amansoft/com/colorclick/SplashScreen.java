@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,16 +19,17 @@ import io.fabric.sdk.android.Fabric;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private int SCREEN_TIME_OUT = 2500;
+    private int SCREEN_TIME_OUT = 1000;
     private Boolean firstTime = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash_screen);
         Fabric.with(this, new Crashlytics());
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
 
      /*   new Handler().postDelayed(new Runnable() {
@@ -48,6 +50,53 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+
+            final MediaPlayer StartUpFX = MediaPlayer.create(this, R.raw.startup);
+            StartUpFX.start();
+            StartUpFX.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+
+
+                    SplashScreenAction();
+                    StartUpFX.stop();
+                    StartUpFX.reset();
+
+                }
+            });
+
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                YoYo.with(Techniques.ZoomInDown).duration(800).repeat(0).playOn(findViewById(R.id.splash_text));
+                YoYo.with(Techniques.BounceInUp).duration(500).repeat(0).playOn(findViewById(R.id.asdev_production_text));
+            }
+        },100);
+    }
+
+    //Checks if the App was run fist time or not
+    private boolean isFirstRun() {
+        if (firstTime == null) {
+            SharedPreferences mPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
+            firstTime = mPreferences.getBoolean("firstTime", true);
+            if (firstTime) {
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putBoolean("firstTime", false);
+                editor.commit();
+            }
+        }
+        return firstTime;
+
+    }
+
+
+    private void SplashScreenAction()
+    {
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -75,21 +124,6 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         }, SCREEN_TIME_OUT);
-    }
-
-    //Checks if the App was run fist time or not
-    private boolean isFirstRun() {
-        if (firstTime == null) {
-            SharedPreferences mPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
-            firstTime = mPreferences.getBoolean("firstTime", true);
-            if (firstTime) {
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putBoolean("firstTime", false);
-                editor.commit();
-            }
-        }
-        return firstTime;
-
     }
 
 

@@ -18,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,6 +32,7 @@ public class Game extends AppCompatActivity {
     private CountDownTimer timer;
     private int RANDOM_NAME;
     private int RANDOM_COLOR;
+    private int RANDOM_CASE;
     private ProgressBar timeBar;
     private Button redButton, blueButton, greenButton, yellowButton;
     private TextView scoreText , highestScoretext, challengeText, timeText;
@@ -74,6 +77,21 @@ public class Game extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        YoYo.with(Techniques.BounceIn).duration(300).repeat(0).playOn(findViewById(R.id.score_container));
+                        YoYo.with(Techniques.BounceIn).duration(450).repeat(0).playOn(findViewById(R.id.timer_container));
+                        YoYo.with(Techniques.BounceIn).duration(600).repeat(0).playOn(findViewById(R.id.challenge_text));
+                        YoYo.with(Techniques.BounceIn).duration(750).repeat(0).playOn(findViewById(R.id.red_button));
+                        YoYo.with(Techniques.BounceIn).duration(900).repeat(0).playOn(findViewById(R.id.blue_button));
+                        YoYo.with(Techniques.BounceIn).duration(1050).repeat(0).playOn(findViewById(R.id.yellow_button));
+                        YoYo.with(Techniques.BounceIn).duration(1150).repeat(0).playOn(findViewById(R.id.green_button));
+                    }
+                }, 100);
+
+
+
         //Setting Welcome Text
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -86,6 +104,9 @@ public class Game extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                if(GAME_STATE==2)
+                                    endGame();
+                                else if(GAME_STATE==0)
                                 startGame();
                             }
                         },1000);
@@ -98,10 +119,10 @@ public class Game extends AppCompatActivity {
         createTimer(2000);
 
 
-
         redButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.red_button));
                 if(GAME_STATE == 1)
                 checkAnswer(0);
             }
@@ -110,6 +131,7 @@ public class Game extends AppCompatActivity {
         blueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.blue_button));
                 if(GAME_STATE == 1)
                     checkAnswer(1);
             }
@@ -118,6 +140,7 @@ public class Game extends AppCompatActivity {
         greenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.green_button));
                 if(GAME_STATE == 1)
                     checkAnswer(2);
             }
@@ -126,6 +149,7 @@ public class Game extends AppCompatActivity {
         yellowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.yellow_button));
                 if(GAME_STATE == 1)
                     checkAnswer(3);
             }
@@ -147,7 +171,7 @@ public class Game extends AppCompatActivity {
         }
         else
         {
-            endGame();
+            timer.onFinish();
         }
     }
 
@@ -183,23 +207,11 @@ public class Game extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        GAME_STATE=2;
        // timer.onFinish();
-       // endGame();
+       //finish();
     }
 
-    //OnDestroy
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //endGame();
-    }
-
-    //OnPause
-    @Override
-    protected void onPause() {
-        super.onPause();
-        endGame();
-    }
 
     //Starts the game
     private void startGame() {
@@ -207,15 +219,33 @@ public class Game extends AppCompatActivity {
         timeBar.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         GAME_STATE=1;
        // vibrate();
-        PlayGameTimerFX();
       //  Toast.makeText(this, "Game Started", Toast.LENGTH_SHORT).show();
 
         final Random R_COLOR = new Random();
         final Random R_NAME = new Random();
+        final Random R_CASE = new Random();
             RANDOM_COLOR = R_COLOR.nextInt(4);
             RANDOM_NAME = R_NAME.nextInt(4);
+            RANDOM_CASE = R_CASE.nextInt(3);
         setAnswer(RANDOM_NAME);
-        challengeText.setText(NAMES[RANDOM_NAME]);
+        if(score>=100) {
+            switch (RANDOM_CASE) {
+                case 0:
+                    challengeText.setText(NAMES[RANDOM_NAME]);
+                    break;
+                case 1:
+                    challengeText.setText(NAMES[RANDOM_NAME].toUpperCase());
+                    break;
+                case 2:
+                    challengeText.setText(NAMES[RANDOM_NAME].toLowerCase());
+                    break;
+                default:
+                    challengeText.setText(NAMES[RANDOM_NAME]);
+                    break;
+            }
+        } else{
+            challengeText.setText(NAMES[RANDOM_NAME]);
+        }
         challengeText.setTextColor(COLOURS[RANDOM_COLOR]);
         starttimer();
 
@@ -230,6 +260,7 @@ public class Game extends AppCompatActivity {
     //Starts the Game timer
     private void starttimer()
     {
+        PlayGameTimerFX();
         timer.start();
     }
 

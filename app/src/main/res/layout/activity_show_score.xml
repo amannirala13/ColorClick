@@ -11,15 +11,15 @@
         android:id="@+id/show_score_Title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:text="Game Over"
-        android:textAlignment="center"
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:textColor="#88ffffff"
         android:layout_above="@id/show_score_container"
         android:layout_alignParentTop="true"
-        />
+        android:layout_marginTop="31dp"
+        android:layout_marginBottom="29dp"
+        android:text="Game Over"
+        android:textAlignment="center"
+        android:textColor="#88ffffff"
+        android:textSize="50dp"
+        android:textStyle="bold" />
 
 
     <RelativeLayout
