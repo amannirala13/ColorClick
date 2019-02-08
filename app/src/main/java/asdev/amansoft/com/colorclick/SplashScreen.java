@@ -87,7 +87,7 @@ public class SplashScreen extends AppCompatActivity {
             if (firstTime) {
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putBoolean("firstTime", false);
-                editor.commit();
+                editor.apply();
             }
         }
         return firstTime;

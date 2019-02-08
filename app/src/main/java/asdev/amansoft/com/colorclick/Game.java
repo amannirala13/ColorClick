@@ -329,7 +329,7 @@ public class Game extends AppCompatActivity {
     {
         pointFx = MediaPlayer.create(this, R.raw.point);
         pointFx.start();
-        final float volume = (float) (1 - (Math.log(MAX_VOLUME - 30) / Math.log(MAX_VOLUME)));
+        final float volume = (float) (1 - (Math.log(MAX_VOLUME - 20) / Math.log(MAX_VOLUME)));
         pointFx.setVolume(volume, volume);
         pointFx.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
