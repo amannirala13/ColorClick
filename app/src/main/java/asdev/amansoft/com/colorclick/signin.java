@@ -44,6 +44,7 @@ public class signin extends AppCompatActivity {
     private Button continureBtn, signOutBtn;
 
     private final static int RC_SIGN_IN = 2;
+    private int BackPressedState = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,10 @@ public class signin extends AppCompatActivity {
 
         new Handler().postDelayed(new Runnable() {
             @Override
-            public void run() { YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container)); }},250);
+            public void run() {
+                YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
+            }
+        }, 250);
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,11 +81,13 @@ public class signin extends AppCompatActivity {
             public void onClick(View v) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void run() { YoYo.with(Techniques.SlideOutDown).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container)); }},200);
+                    public void run() {
+                        YoYo.with(Techniques.SlideOutDown).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
+                    }
+                }, 200);
                 signIn();
             }
         });
-
 
 
         continureBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +107,6 @@ public class signin extends AppCompatActivity {
                 updateSignedOutUI();
             }
         });
-
 
 
     }
@@ -125,7 +130,7 @@ public class signin extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 // ...
-                Snackbar message = Snackbar.make(findViewById(R.id.signin_screen),"Oops! Something went wrong, not able to sign you up",Snackbar.LENGTH_LONG);
+                Snackbar message = Snackbar.make(findViewById(R.id.signin_screen), "Oops! Something went wrong, not able to sign you up", Snackbar.LENGTH_LONG);
                 message.show();
                 YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
             }
@@ -134,28 +139,28 @@ public class signin extends AppCompatActivity {
     }
 
 
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
-        private void firebaseAuthWithGoogle (GoogleSignInAccount acct){
-
-            AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-            mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Intent MainActivityIntent = new Intent(signin.this, MainActivity.class);
-                                startActivity(MainActivityIntent);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Snackbar message = Snackbar.make(findViewById(R.id.signin_screen),"Oops! Something went wrong, not able to sign you up",Snackbar.LENGTH_LONG);
-                                message.show();
-                            }
-
-                            // ...
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Intent MainActivityIntent = new Intent(signin.this, MainActivity.class);
+                            startActivity(MainActivityIntent);
+                            finish();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Snackbar message = Snackbar.make(findViewById(R.id.signin_screen), "Oops! Something went wrong, not able to sign you up", Snackbar.LENGTH_LONG);
+                            message.show();
                         }
-                    });
-        }
+
+                        // ...
+                    }
+                });
+    }
 
     private void updateSignedInUI() {
 
@@ -166,7 +171,7 @@ public class signin extends AppCompatActivity {
                 YoYo.with(Techniques.BounceInUp).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
 
             }
-        },200);
+        }, 200);
 
         Picasso.get().load(mAccount.getPhotoUrl().toString()).into(profilePic);
         profileName.setText(mAccount.getDisplayName());
@@ -189,7 +194,7 @@ public class signin extends AppCompatActivity {
                 YoYo.with(Techniques.SlideOutDown).duration(600).repeat(0).playOn(findViewById(R.id.account_info_container));
 
             }
-        },200);
+        }, 200);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -202,8 +207,30 @@ public class signin extends AppCompatActivity {
                 googleSigninButton.setVisibility(View.VISIBLE);
 
             }
-        },850);
+        }, 850);
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        ++BackPressedState;
+
+        if (BackPressedState == 2) {
+            System.exit(0);
+        }
+        else
+        {
+            Snackbar exitMessage = Snackbar.make(findViewById(R.id.signin_screen), "Press again to exit !", Snackbar.LENGTH_SHORT);
+            exitMessage.show();
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                    BackPressedState = 0;
+            }
+        }, 2000);
 
     }
 }

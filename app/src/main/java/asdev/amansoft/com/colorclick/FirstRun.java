@@ -11,6 +11,7 @@ public class FirstRun extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_run);
 
-       startActivity(new Intent(FirstRun.this, MainActivity.class));
+       startActivity(new Intent(FirstRun.this, signin.class));
+       finish();
     }
 }

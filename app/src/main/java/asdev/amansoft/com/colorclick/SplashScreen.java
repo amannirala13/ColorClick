@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ public class SplashScreen extends AppCompatActivity {
 
     private int SCREEN_TIME_OUT = 1000;
     private Boolean firstTime = null;
+    private Boolean PERSISTENCE_STATE = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,6 @@ public class SplashScreen extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash_screen);
         Fabric.with(this, new Crashlytics());
-
 
 
      /*   new Handler().postDelayed(new Runnable() {
@@ -124,6 +125,20 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         }, SCREEN_TIME_OUT);
+    }
+
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if(savedInstanceState!=null)
+            savedInstanceState.putBoolean("PERSISTENCE_STATE", PERSISTENCE_STATE);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        PERSISTENCE_STATE =savedInstanceState.getBoolean("PERSISTENCE_STATE");
     }
 
 
