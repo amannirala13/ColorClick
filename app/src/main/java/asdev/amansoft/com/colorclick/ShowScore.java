@@ -61,6 +61,7 @@ public class ShowScore extends AppCompatActivity {
         ++BackPressedState;
 
         if (BackPressedState == 2) {
+            finish();
             System.exit(0);}
             else
         {

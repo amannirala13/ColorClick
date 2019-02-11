@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,14 +28,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     private Button playButton;
     private DatabaseReference mDatabase;
     private TextView worldsHighestScoreText;
-    private String worldsHighestScore;
+    private String worldsHighestScore, personalHighestScore;
     private RelativeLayout loadingContainer, mainContainer;
     private CircularImageView profilePic;
-    private TextView playerName, worldsHighestScoreName;
+    private TextView playerName, worldsHighestScoreName, yourHighestScore;
     private MediaPlayer BackgroundFx;
     private int BackgroundMusicState = 0;
     private int BackPressedState = 0;
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.player_image);
         playerName = findViewById(R.id.name_text);
         worldsHighestScoreName = findViewById(R.id.world_highest_score_name);
+        yourHighestScore = findViewById(R.id.your_highest_score);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("ColorClick13");
@@ -70,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         Intent GameIntent = new Intent(MainActivity.this, Game.class);
                         GameIntent.putExtra("WORLD_HIGHEST", worldsHighestScore);
+                        GameIntent.putExtra("PERSONAL_HIGHEST",personalHighestScore);
                         startActivity(GameIntent);
                         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         finish();
@@ -93,14 +101,51 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        final DatabaseReference userDataBaseRef = mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        userDataBaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("Personal Score")) {
+                    personalHighestScore = dataSnapshot.child("Personal Score").child("HighestScore").getValue().toString();
+                    yourHighestScore.setText(personalHighestScore);
+
+                }
+                else
+                {
+                    userDataBaseRef.child("Personal Score").child("HighestScore").setValue(0);
+                    userDataBaseRef.child("Personal Score").child("HighestScore_Time").setValue(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "Error in connecting to Database", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                worldsHighestScore = dataSnapshot.child("World Highest").getValue().toString();
-                worldsHighestScoreText.setText(worldsHighestScore);
-                worldsHighestScoreName.setText(dataSnapshot.child("World Leader").getValue().toString());
-                loadingContainer.setVisibility(View.GONE);
+
+                if (dataSnapshot.hasChild("World"))
+                {
+                    worldsHighestScore = dataSnapshot.child("World").child("World Highest").getValue().toString();
+                    worldsHighestScoreText.setText(worldsHighestScore);
+                    worldsHighestScoreName.setText(dataSnapshot.child("World").child("World Leader").getValue().toString());
+                    loadingContainer.setVisibility(View.GONE);
+                }
+
+                else
+                {
+                    mDatabase.child("World").child("World Leader").setValue("...");
+                    mDatabase.child("World").child("World Highest").setValue(0);
+                    mDatabase.child("World").child("Time").setValue(0);
+                    mDatabase.child("World").child("UserID").setValue(0);
+                }
+
                 animateMainScreen();
+
             }
 
             @Override
@@ -157,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         new helper().StopBackGroundMusic(BackgroundFx);
         BackgroundMusicState=0;
-        finish();
     }
 
     @Override
@@ -179,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         ++BackPressedState;
 
         if(BackPressedState==2) {
+            finish();
             System.exit(0);
         }
         else {

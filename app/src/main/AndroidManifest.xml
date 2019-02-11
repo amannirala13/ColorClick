@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_color_click_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowScore"></activity>
+        <activity android:name=".PersonalHighScore"></activity>
+        <activity android:name=".WorldHighScore" />
+        <activity android:name=".ShowScore" />
         <activity android:name=".FirstRun" />
         <activity
             android:name=".signin"
@@ -28,6 +30,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

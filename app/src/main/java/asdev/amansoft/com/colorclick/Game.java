@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 public class Game extends AppCompatActivity {
@@ -33,29 +36,28 @@ public class Game extends AppCompatActivity {
     private int RANDOM_NAME;
     private int RANDOM_COLOR;
     private int RANDOM_CASE;
+    private int [] GENERATED_BUTTONS;
     private ProgressBar timeBar;
     private Button redButton, blueButton, greenButton, yellowButton;
     private TextView scoreText , highestScoretext, challengeText, timeText;
-    private int COLOURS [] = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
+    private int COLOURS [] = {Color.parseColor("#FF1E1E"),Color.parseColor("#4169E1"), Color.parseColor("#00BF00"),Color.parseColor("#FFBF00")};
     private String NAMES [] = {"Red", "Blue", "Green", "Yellow"};
     private int GAME_STATE = 0;
     private int answer;
     private int score =0;
-    private Vibrator newChallengePing;
-    private long worldHighestScore;
-    private MediaPlayer gameTimerFX , timesUPFX, pointFx, looseFX;
+  //  private Vibrator newChallengePing;
+    private long worldHighestScore, personalHighest;
+    private MediaPlayer gameTimerFX, pointFx, looseFX;
     private final static int MAX_VOLUME = 100;
+    private long OUT_TIME =2000;
 
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase, scoreDatabase;
 
     //OnCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-
-
 
 
         //Initialising variables
@@ -68,14 +70,17 @@ public class Game extends AppCompatActivity {
         timeText = findViewById(R.id.time_text);
         scoreText = findViewById(R.id.score);
         highestScoretext = findViewById(R.id.high_score);
-        newChallengePing = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+      //  newChallengePing = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         worldHighestScore = Long.parseLong(getIntent().getStringExtra("WORLD_HIGHEST"));
+        personalHighest = Long.parseLong(getIntent().getStringExtra("PERSONAL_HIGHEST"));
         highestScoretext.setText(getIntent().getStringExtra("WORLD_HIGHEST"));
 
 
+        GENERATED_BUTTONS = new int[]{0, 1, 2, 3};
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        scoreDatabase = mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -90,6 +95,10 @@ public class Game extends AppCompatActivity {
                     }
                 }, 100);
 
+
+        Date CURRENT_TIME_PLAYED = Calendar.getInstance().getTime();
+
+        scoreDatabase.child("LastPlayed").setValue(CURRENT_TIME_PLAYED.toString());
 
 
         //Setting Welcome Text
@@ -116,15 +125,12 @@ public class Game extends AppCompatActivity {
         },2500);
 
 
-        createTimer(2000);
-
-
         redButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.red_button));
                 if(GAME_STATE == 1)
-                checkAnswer(0);
+                checkAnswer(GENERATED_BUTTONS[0]);
             }
         });
 
@@ -133,7 +139,7 @@ public class Game extends AppCompatActivity {
             public void onClick(View v) {
                 YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.blue_button));
                 if(GAME_STATE == 1)
-                    checkAnswer(1);
+                    checkAnswer(GENERATED_BUTTONS[1]);
             }
         });
 
@@ -142,7 +148,7 @@ public class Game extends AppCompatActivity {
             public void onClick(View v) {
                 YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.green_button));
                 if(GAME_STATE == 1)
-                    checkAnswer(2);
+                    checkAnswer(GENERATED_BUTTONS[2]);
             }
         });
 
@@ -151,7 +157,7 @@ public class Game extends AppCompatActivity {
             public void onClick(View v) {
                 YoYo.with(Techniques.RubberBand).duration(200).repeat(0).playOn(findViewById(R.id.yellow_button));
                 if(GAME_STATE == 1)
-                    checkAnswer(3);
+                    checkAnswer(GENERATED_BUTTONS[3]);
             }
         });
 
@@ -166,6 +172,7 @@ public class Game extends AppCompatActivity {
         {
             PlayPointFX();
             ++score;
+            YoYo.with(Techniques.Shake).duration(200).repeat(0).playOn(findViewById(R.id.score));
             scoreText.setText(Integer.toString(score));
             startGame();
         }
@@ -177,30 +184,56 @@ public class Game extends AppCompatActivity {
 
     //When the Game ends
     private void endGame() {
-
         StopPointFX();
         StopGameTimerFX();
         timer.cancel();
         PlayLooseFX();
-        if(score>worldHighestScore) {
-            mDatabase.child("World Leader").setValue(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-            mDatabase.child("World Highest").setValue(score);
-            Intent endGameIntent = new Intent(Game.this, MainActivity.class);
-            endGameIntent.putExtra("SCORE", score);
-            startActivity(endGameIntent);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            finish();
-        }
-       // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
-       // GAME_STATE = 0;
 
-        else {
+        Date CURRENT_TIME = Calendar.getInstance().getTime();
+
+        if(score>personalHighest) {
+            scoreDatabase.child("Personal Score").child("HighestScore").setValue(score);
+            scoreDatabase.child("Personal Score").child("HighestScore_Time").setValue(CURRENT_TIME.toString());
+            Toast.makeText(this, "   Congratulations!!! You broke your own Record 😍   ", Toast.LENGTH_LONG).show();
+
+
+            if (score > worldHighestScore) {
+                mDatabase.child("World").child("World Leader").setValue(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                mDatabase.child("World").child("World Highest").setValue(score);
+                mDatabase.child("World").child("Time").setValue(CURRENT_TIME.toString());
+                mDatabase.child("World").child("UserID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                Toast.makeText(this, "   Congratulations!!! You broke the world Record 😍   ", Toast.LENGTH_LONG).show();
+
+                //ToDO>>> Show world congo Screen
+            }
+          /*  else
+                {
+                    //ToDO>>>> Show Personal High Score Screen
+                    Intent endGameIntent = new Intent(Game.this, ShowScore.class);
+                    endGameIntent.putExtra("SCORE", score);
+                    startActivity(endGameIntent);
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    finish();
+            }
+
+        }
+        else
+            {
             Intent endGameIntent = new Intent(Game.this, ShowScore.class);
             endGameIntent.putExtra("SCORE", score);
             startActivity(endGameIntent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            finish();
-        }
+            finish();*/
+            }
+        Intent endGameIntent = new Intent(Game.this, ShowScore.class);
+        endGameIntent.putExtra("SCORE", score);
+        startActivity(endGameIntent);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        finish();
+
+       // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
+       // GAME_STATE = 0;
+
     }
 
     //OnStop
@@ -215,6 +248,10 @@ public class Game extends AppCompatActivity {
 
     //Starts the game
     private void startGame() {
+        if(timer!=null)
+            stopTimer();
+        resetTimer();
+        createTimer(OUT_TIME);
         timeText.setTextColor(Color.WHITE);
         timeBar.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         GAME_STATE=1;
@@ -228,7 +265,8 @@ public class Game extends AppCompatActivity {
             RANDOM_NAME = R_NAME.nextInt(4);
             RANDOM_CASE = R_CASE.nextInt(3);
         setAnswer(RANDOM_NAME);
-        if(score>=100) {
+        if(score>=100)
+        {
             switch (RANDOM_CASE) {
                 case 0:
                     challengeText.setText(NAMES[RANDOM_NAME]);
@@ -247,7 +285,27 @@ public class Game extends AppCompatActivity {
             challengeText.setText(NAMES[RANDOM_NAME]);
         }
         challengeText.setTextColor(COLOURS[RANDOM_COLOR]);
+        GENERATED_BUTTONS = getRandomButtons();
+        setRandomButtons(GENERATED_BUTTONS);
         starttimer();
+
+
+    }
+
+    private void setRandomButtons(int[] randomButtons) {
+
+
+        redButton.setBackgroundColor(COLOURS[randomButtons[0]]);
+        redButton.setText(NAMES[randomButtons[0]]);
+
+        blueButton.setBackgroundColor(COLOURS[randomButtons[1]]);
+        blueButton.setText(NAMES[randomButtons[1]]);
+
+        greenButton.setBackgroundColor(COLOURS[randomButtons[2]]);
+        greenButton.setText(NAMES[randomButtons[2]]);
+
+        yellowButton.setBackgroundColor(COLOURS[randomButtons[3]]);
+        yellowButton.setText(NAMES[randomButtons[3]]);
 
 
     }
@@ -270,6 +328,7 @@ public class Game extends AppCompatActivity {
         timer = new CountDownTimer(milliseconds, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                OUT_TIME = millisUntilFinished;
                 int seconds = (int) millisUntilFinished % 60000 / 1000;
                 double percent = (seconds+1 / 2.0) * 100.0;
                 if ((seconds+1)<=1) {
@@ -302,7 +361,17 @@ public class Game extends AppCompatActivity {
         };
     }
 
+    private void stopTimer()
+    {
+        timer.cancel();
+    }
+    private void resetTimer()
+    {
+        OUT_TIME = 2000;
+    }
 
+
+/*
     //Vibrates the phone
     private void vibrate(){
         if (Build.VERSION.SDK_INT >= 26) {
@@ -312,7 +381,7 @@ public class Game extends AppCompatActivity {
         }
     }
 
-
+*/
     private void PlayGameTimerFX()
     {
         gameTimerFX = MediaPlayer.create(this, R.raw.game_timer);
@@ -356,6 +425,44 @@ public class Game extends AppCompatActivity {
                 looseFX.reset();
             }
         });
+    }
+
+
+
+    private int[] getRandomButtons()
+    {
+        int RANDOM_B1, RANDOM_B2, RANDOM_B3, RANDOM_B4;
+        int returnArray[] = {0,1,2,3};
+        final Random RANDOM_BX = new Random();
+
+        RANDOM_B1 = RANDOM_BX.nextInt(4);
+        RANDOM_B2 = RANDOM_BX.nextInt(4);
+        if(RANDOM_B1!=RANDOM_B2)
+        {
+            RANDOM_B3 = RANDOM_BX.nextInt(4);
+            if(RANDOM_B3!=RANDOM_B1 && RANDOM_B3!=RANDOM_B2)
+            {
+                RANDOM_B4= RANDOM_BX.nextInt(4);
+                if(RANDOM_B4!=RANDOM_B1 && RANDOM_B4!=RANDOM_B2 && RANDOM_B4!=RANDOM_B3)
+                {
+
+                   // Toast.makeText(this, Integer.toString(RANDOM_B1)+Integer.toString(RANDOM_B2)+Integer.toString(RANDOM_B3)+Integer.toString(RANDOM_B4), Toast.LENGTH_SHORT).show();
+
+                    returnArray= new int[]{RANDOM_B1, RANDOM_B2, RANDOM_B3, RANDOM_B4};
+                }
+                else{
+                    getRandomButtons();
+                }
+            }
+            else
+            {
+                getRandomButtons();
+            }
+        }
+        else{
+            getRandomButtons();
+        }
+        return returnArray;
     }
 
 

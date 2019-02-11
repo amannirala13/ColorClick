@@ -3,4 +3,8 @@
     <color name="colorPrimary">#000729</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#fff</color>
+    <color name="buttonRED">#FF1E1E</color>
+    <color name="buttoBLUE">#4169E1</color>
+    <color name="buttonGREEN">#00BF00</color>
+    <color name="buttonYELLOW">#FFBF00</color>
 </resources>
