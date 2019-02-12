@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class Game extends AppCompatActivity {
     private MediaPlayer gameTimerFX, pointFx, looseFX;
     private final static int MAX_VOLUME = 100;
     private long OUT_TIME =2000;
+    private RelativeLayout gameScreen;
 
     private DatabaseReference mDatabase, scoreDatabase;
 
@@ -67,6 +69,7 @@ public class Game extends AppCompatActivity {
         greenButton = findViewById(R.id.green_button);
         yellowButton = findViewById(R.id.yellow_button);
         challengeText = findViewById(R.id.challenge_text);
+        gameScreen = findViewById(R.id.game_screen);
         timeText = findViewById(R.id.time_text);
         scoreText = findViewById(R.id.score);
         highestScoretext = findViewById(R.id.high_score);
@@ -174,11 +177,33 @@ public class Game extends AppCompatActivity {
             ++score;
             YoYo.with(Techniques.Shake).duration(200).repeat(0).playOn(findViewById(R.id.score));
             scoreText.setText(Integer.toString(score));
+            updateGameScreen(score);
             startGame();
         }
         else
         {
             timer.onFinish();
+        }
+    }
+
+    private void updateGameScreen(int score) {
+
+        if(score>200)
+        {
+            if(score>500)
+            {
+                if(score>1000)
+                {
+                        gameScreen.setBackground(getDrawable(R.drawable.backdrop_low));
+
+                }else{
+                    gameScreen.setBackground(getDrawable(R.drawable.almost_blue_game_gradient));
+                }
+            }else
+            {
+                gameScreen.setBackground(getDrawable(R.drawable.cheap_sugar_game_gradient));
+            }
+
         }
     }
 

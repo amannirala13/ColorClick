@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private String worldsHighestScore, personalHighestScore;
     private RelativeLayout loadingContainer, mainContainer;
     private CircularImageView profilePic;
+    private ImageView winnerTag;
     private TextView playerName, worldsHighestScoreName, yourHighestScore;
     private MediaPlayer BackgroundFx;
     private int BackgroundMusicState = 0;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         playerName = findViewById(R.id.name_text);
         worldsHighestScoreName = findViewById(R.id.world_highest_score_name);
         yourHighestScore = findViewById(R.id.your_highest_score);
+        winnerTag = findViewById(R.id.winner_tag);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("ColorClick13");
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     @Override
@@ -108,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
                 if (dataSnapshot.hasChild("Personal Score")) {
                     personalHighestScore = dataSnapshot.child("Personal Score").child("HighestScore").getValue().toString();
                     yourHighestScore.setText(personalHighestScore);
+                    if (worldsHighestScoreText.getText().toString().equalsIgnoreCase(yourHighestScore.getText().toString()))
+                    {
+                        winnerTag.setVisibility(View.VISIBLE);
+                    }else
+                    {
+                        winnerTag.setVisibility(View.GONE);
+                    }
 
                 }
                 else
@@ -119,40 +131,37 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MainActivity.this, "Error in connecting to Database", Toast.LENGTH_SHORT).show();
+                Snackbar error = Snackbar.make(findViewById(R.id.signin_screen), "Failed to connect to Server !", Snackbar.LENGTH_SHORT);
+                error.show();
             }
         });
 
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.child("World").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.hasChild("World"))
-                {
-                    worldsHighestScore = dataSnapshot.child("World").child("World Highest").getValue().toString();
+                    worldsHighestScore = dataSnapshot.child("World Highest").getValue().toString();
                     worldsHighestScoreText.setText(worldsHighestScore);
-                    worldsHighestScoreName.setText(dataSnapshot.child("World").child("World Leader").getValue().toString());
+                    worldsHighestScoreName.setText(dataSnapshot.child("World Leader").getValue().toString());
                     loadingContainer.setVisibility(View.GONE);
-                }
-
-                else
+                if (worldsHighestScoreText.getText().toString().equalsIgnoreCase(yourHighestScore.getText().toString()))
                 {
-                    mDatabase.child("World").child("World Leader").setValue("...");
-                    mDatabase.child("World").child("World Highest").setValue(0);
-                    mDatabase.child("World").child("Time").setValue(0);
-                    mDatabase.child("World").child("UserID").setValue(0);
+                    winnerTag.setVisibility(View.VISIBLE);
+                }else
+                {
+                    winnerTag.setVisibility(View.GONE);
                 }
-
                 animateMainScreen();
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MainActivity.this, "Error connecting to Database", Toast.LENGTH_SHORT).show();
+                Snackbar error = Snackbar.make(findViewById(R.id.signin_screen), "Failed to connect to Server !", Snackbar.LENGTH_SHORT);
+                error.show();
             }
         });
+
     }
 
     private void animateMainScreen() {

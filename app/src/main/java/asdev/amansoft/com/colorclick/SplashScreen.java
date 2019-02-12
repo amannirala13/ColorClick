@@ -27,7 +27,6 @@ import io.fabric.sdk.android.Fabric;
 public class SplashScreen extends AppCompatActivity {
 
     private int SCREEN_TIME_OUT = 1000;
-    private Boolean firstTime = null;
     private Boolean PERSISTENCE_STATE = false;
 
     @Override
@@ -80,25 +79,10 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
 
-                YoYo.with(Techniques.ZoomInDown).duration(800).repeat(0).playOn(findViewById(R.id.splash_text));
-                YoYo.with(Techniques.BounceInUp).duration(500).repeat(0).playOn(findViewById(R.id.asdev_production_text));
+                YoYo.with(Techniques.BounceIn).duration(800).repeat(0).playOn(findViewById(R.id.splash_text));
+              //  YoYo.with(Techniques.BounceInUp).duration(500).repeat(0).playOn(findViewById(R.id.asdev_production_text));
             }
         },100);
-    }
-
-    //Checks if the App was run fist time or not
-    private boolean isFirstRun() {
-        if (firstTime == null) {
-            SharedPreferences mPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
-            firstTime = mPreferences.getBoolean("firstTime", true);
-            if (firstTime) {
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putBoolean("firstTime", false);
-                editor.apply();
-            }
-        }
-        return firstTime;
-
     }
 
 
@@ -110,17 +94,10 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 if (new check().isValidUser()) {
 
-                    if (isFirstRun()) {
-                        Intent MainActivityIntent = new Intent(SplashScreen.this, FirstRun.class);
-                        startActivity(MainActivityIntent);
-                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                        finish();
-                    } else {
-                        Intent MainActivityIntent = new Intent(SplashScreen.this, MainActivity.class);
-                        startActivity(MainActivityIntent);
-                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                        finish();
-                    }
+                    Intent MainActivityIntent = new Intent(SplashScreen.this, MainActivity.class);
+                    startActivity(MainActivityIntent);
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    finish();
 
 
                 } else {

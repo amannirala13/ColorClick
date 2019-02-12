@@ -29,7 +29,7 @@
             android:id="@+id/player_image"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_color_click_logo"
             android:layout_centerInParent="true"
             android:layout_above="@id/main_container"
             android:layout_marginBottom="15dp"
@@ -39,6 +39,16 @@
             app:civ_background_color="#fff"
             android:visibility="gone"
             />
+    <ImageView
+        android:id="@+id/winner_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/winner"
+        android:layout_alignBottom="@id/player_image"
+        android:layout_alignRight="@id/player_image"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
 
 
     <RelativeLayout

@@ -7,4 +7,5 @@
     <color name="buttoBLUE">#4169E1</color>
     <color name="buttonGREEN">#00BF00</color>
     <color name="buttonYELLOW">#FFBF00</color>
+    <color name="semiTransparent">#32000000</color>
 </resources>

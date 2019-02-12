@@ -42,7 +42,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="15dp"
             android:layout_below="@id/signin_text"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_color_click_logo"
             app:civ_border="true"
             app:civ_border_color="#88ffffff"
             app:civ_border_width="3.5dp"
