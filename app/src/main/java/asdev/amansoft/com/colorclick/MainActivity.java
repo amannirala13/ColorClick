@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Snackbar error = Snackbar.make(findViewById(R.id.signin_screen), "Failed to connect to Server !", Snackbar.LENGTH_SHORT);
+                Snackbar error = Snackbar.make(findViewById(R.id.main_container), "Failed to connect to Server !", Snackbar.LENGTH_SHORT);
                 error.show();
             }
         });
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Snackbar error = Snackbar.make(findViewById(R.id.signin_screen), "Failed to connect to Server !", Snackbar.LENGTH_SHORT);
+                Snackbar error = Snackbar.make(findViewById(R.id.main_container), "Failed to connect to Server !", Snackbar.LENGTH_SHORT);
                 error.show();
             }
         });

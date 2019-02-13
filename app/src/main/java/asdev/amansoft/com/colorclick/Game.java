@@ -1,5 +1,8 @@
 package asdev.amansoft.com.colorclick;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -22,6 +25,11 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,7 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-public class Game extends AppCompatActivity {
+public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     //Variable Initiation
     private CountDownTimer timer;
@@ -52,8 +60,9 @@ public class Game extends AppCompatActivity {
     private final static int MAX_VOLUME = 100;
     private long OUT_TIME =2000;
     private RelativeLayout gameScreen;
-
+    private RewardedVideoAd pointsAd;
     private DatabaseReference mDatabase, scoreDatabase;
+    private ProgressDialog LoadingDialog;
 
     //OnCreate
     @Override
@@ -73,15 +82,19 @@ public class Game extends AppCompatActivity {
         timeText = findViewById(R.id.time_text);
         scoreText = findViewById(R.id.score);
         highestScoretext = findViewById(R.id.high_score);
+        pointsAd = MobileAds.getRewardedVideoAdInstance(this);
       //  newChallengePing = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         worldHighestScore = Long.parseLong(getIntent().getStringExtra("WORLD_HIGHEST"));
         personalHighest = Long.parseLong(getIntent().getStringExtra("PERSONAL_HIGHEST"));
         highestScoretext.setText(getIntent().getStringExtra("WORLD_HIGHEST"));
 
+        LoadingDialog = new ProgressDialog(Game.this);
+        LoadingDialog.setMessage("Please wait...");
 
         GENERATED_BUTTONS = new int[]{0, 1, 2, 3};
 
-
+        pointsAd.setRewardedVideoAdListener(this);
+        
         mDatabase = FirebaseDatabase.getInstance().getReference();
         scoreDatabase = mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -167,6 +180,13 @@ public class Game extends AppCompatActivity {
 
     }
 
+    private void LoadAd() {
+        if(!pointsAd.isLoaded())
+        {
+            pointsAd.loadAd("ca-app-pub-3923725939846581/5361606697", new AdRequest.Builder().build());
+        }
+    }
+
     //Check the answer if it is correct or not
     private void checkAnswer(int input) {
 
@@ -209,13 +229,58 @@ public class Game extends AppCompatActivity {
 
     //When the Game ends
     private void endGame() {
+        LoadingDialog.show();
         StopPointFX();
         StopGameTimerFX();
-       stopTimer();
+        timer.cancel();
         PlayLooseFX();
+        LoadAd();
 
+       // AfterChoice();
+
+    }
+
+    private void ShowPromotionDialog() {
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(Game.this);
+        builder1.setMessage("Get instant 100 points for viewing this Ad." );
+        builder1.setCancelable(false);
+
+        builder1.setPositiveButton(
+                "Get 100 points!",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                       ShowAd();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                       AfterChoice();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    private void ShowAd() {
+        if (pointsAd.isLoaded())
+        {
+            pointsAd.show();
+        }
+        else{
+            LoadAd();
+            pointsAd.show();
+        }
+    }
+
+    private void AfterChoice() {
         Date CURRENT_TIME = Calendar.getInstance().getTime();
-
         if(score>personalHighest) {
             scoreDatabase.child("Personal Score").child("HighestScore").setValue(score);
             scoreDatabase.child("Personal Score").child("HighestScore_Time").setValue(CURRENT_TIME.toString());
@@ -249,16 +314,15 @@ public class Game extends AppCompatActivity {
             startActivity(endGameIntent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             finish();*/
-            }
+        }
         Intent endGameIntent = new Intent(Game.this, ShowScore.class);
         endGameIntent.putExtra("SCORE", score);
         startActivity(endGameIntent);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         finish();
 
-       // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
-       // GAME_STATE = 0;
-
+        // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
+        // GAME_STATE = 0;
     }
 
     //OnStop
@@ -273,6 +337,7 @@ public class Game extends AppCompatActivity {
 
     //Starts the game
     private void startGame() {
+        if(timer!=null)
             stopTimer();
         resetTimer();
         createTimer(OUT_TIME);
@@ -387,7 +452,6 @@ public class Game extends AppCompatActivity {
 
     private void stopTimer()
     {
-        if(timer!=null)
         timer.cancel();
     }
     private void resetTimer()
@@ -491,4 +555,52 @@ public class Game extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        ShowPromotionDialog();
+        LoadingDialog.dismiss();
     }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+        Snackbar rewardInfo = Snackbar.make(findViewById(R.id.game_screen), "Watch till end to get 100 points !", Snackbar.LENGTH_SHORT);
+        rewardInfo.show();
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        AfterChoice();
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+
+        int InstantScore = rewardItem.getAmount();
+        score = score+ InstantScore;
+        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "Wow ! You got 100 points !", Snackbar.LENGTH_SHORT);
+        reward.show();
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+        Snackbar error = Snackbar.make(findViewById(R.id.game_screen), "Failed to load Ad !: "+ Integer.toString(i), Snackbar.LENGTH_SHORT);
+        error.show();
+        LoadingDialog.dismiss();
+        AfterChoice();
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
+    }
+}

@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import com.crashlytics.android.Crashlytics;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +31,7 @@ public class SplashScreen extends AppCompatActivity {
     private int SCREEN_TIME_OUT = 1000;
     private Boolean PERSISTENCE_STATE = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         Fabric.with(this, new Crashlytics());
 
-
+        MobileAds.initialize(getApplicationContext(),getString(R.string.admob_app_id));
 
      /*   new Handler().postDelayed(new Runnable() {
             @Override

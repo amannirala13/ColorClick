@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Color Click</string>
     <string name="web_client_id">7526901141-s614l0oo3mnsmuv6ec3peu2d4q9nbhkn.apps.googleusercontent.com</string>
+    <string name="admob_app_id">ca-app-pub-3923725939846581~5446112036</string>
 </resources>
