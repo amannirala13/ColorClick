@@ -211,7 +211,7 @@ public class Game extends AppCompatActivity {
     private void endGame() {
         StopPointFX();
         StopGameTimerFX();
-        timer.cancel();
+       stopTimer();
         PlayLooseFX();
 
         Date CURRENT_TIME = Calendar.getInstance().getTime();
@@ -273,7 +273,6 @@ public class Game extends AppCompatActivity {
 
     //Starts the game
     private void startGame() {
-        if(timer!=null)
             stopTimer();
         resetTimer();
         createTimer(OUT_TIME);
@@ -388,6 +387,7 @@ public class Game extends AppCompatActivity {
 
     private void stopTimer()
     {
+        if(timer!=null)
         timer.cancel();
     }
     private void resetTimer()
