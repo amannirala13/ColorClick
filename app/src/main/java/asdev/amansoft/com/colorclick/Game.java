@@ -94,6 +94,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
         GENERATED_BUTTONS = new int[]{0, 1, 2, 3};
 
         pointsAd.setRewardedVideoAdListener(this);
+        LoadAd();
         
         mDatabase = FirebaseDatabase.getInstance().getReference();
         scoreDatabase = mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -229,14 +230,18 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     //When the Game ends
     private void endGame() {
-        LoadingDialog.show();
         StopPointFX();
         StopGameTimerFX();
+        if(timer!=null)
         timer.cancel();
         PlayLooseFX();
-        LoadAd();
-
-       // AfterChoice();
+        if(pointsAd.isLoaded())
+        {
+            ShowPromotionDialog();
+        }
+        else {
+            AfterChoice();
+        }
 
     }
 
@@ -271,10 +276,6 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
     private void ShowAd() {
         if (pointsAd.isLoaded())
         {
-            pointsAd.show();
-        }
-        else{
-            LoadAd();
             pointsAd.show();
         }
     }
@@ -452,6 +453,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     private void stopTimer()
     {
+        if(timer!=null)
         timer.cancel();
     }
     private void resetTimer()
@@ -557,8 +559,6 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdLoaded() {
-        ShowPromotionDialog();
-        LoadingDialog.dismiss();
     }
 
     @Override
@@ -593,10 +593,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
-        Snackbar error = Snackbar.make(findViewById(R.id.game_screen), "Failed to load Ad !: "+ Integer.toString(i), Snackbar.LENGTH_SHORT);
-        error.show();
-        LoadingDialog.dismiss();
-        AfterChoice();
+        Toast.makeText(this, "Failed :"+ Integer.toString(i), Toast.LENGTH_SHORT).show();
     }
 
     @Override

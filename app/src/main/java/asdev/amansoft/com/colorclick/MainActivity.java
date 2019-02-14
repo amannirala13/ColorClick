@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer BackgroundFx;
     private int BackgroundMusicState = 0;
     private int BackPressedState = 0;
+    private AdView mainBanner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        mainBanner = findViewById(R.id.main_activity_banner);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mainBanner.loadAd(adRequest);
 
         playButton = findViewById(R.id.play_button);
         worldsHighestScoreText = findViewById(R.id.world_highest_score);
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         worldsHighestScoreName = findViewById(R.id.world_highest_score_name);
         yourHighestScore = findViewById(R.id.your_highest_score);
         winnerTag = findViewById(R.id.winner_tag);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("ColorClick13");

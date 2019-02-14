@@ -6,21 +6,22 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_animation"
     tools:context=".MainActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
 
 
 
 
     <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
+
         android:id="@+id/main_activity_banner"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        ads:adSize="BANNER"
+        ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-3923725939846581/1342061510"
-        ></com.google.android.gms.ads.AdView>
+        />
 
         <TextView
             android:id="@+id/title_text"
