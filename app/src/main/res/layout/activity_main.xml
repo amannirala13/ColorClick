@@ -23,34 +23,35 @@
         ads:adUnitId="ca-app-pub-3923725939846581/1342061510"
         />
 
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textAllCaps="true"
-            android:layout_centerInParent="true"
-           android:layout_below="@id/main_activity_banner"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="#88ffffff"
 
-            />
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAllCaps="true"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/main_activity_banner"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="#88ffffff"
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/player_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@mipmap/ic_color_click_logo"
-            android:layout_centerInParent="true"
-            android:layout_above="@id/main_container"
-            android:layout_marginBottom="15dp"
-            app:civ_border="true"
-            app:civ_border_color="#88ffffff"
-            app:civ_border_width="3.5dp"
-            app:civ_background_color="#fff"
-            android:visibility="gone"
-            />
+        />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/player_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@mipmap/ic_color_click_logo"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/main_container"
+        android:layout_marginBottom="15dp"
+        app:civ_border="true"
+        app:civ_border_color="#88ffffff"
+        app:civ_border_width="3.5dp"
+        app:civ_background_color="#fff"
+        android:visibility="gone"
+        />
     <ImageView
         android:id="@+id/winner_tag"
         android:layout_width="wrap_content"
@@ -72,9 +73,73 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/round_white"
-        android:paddingTop="10dp"
         android:visibility="gone"
         >
+
+        <LinearLayout
+            android:id="@+id/info_button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/world_highest_score"
+            android:layout_centerInParent="true"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_toEndOf="@id/play_button"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/info_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/ic_info" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="INFO"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/review_button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_below="@id/world_highest_score"
+            android:layout_toStartOf="@id/play_button"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:layout_marginVertical="20dp"
+            >
+
+            <Button
+                android:id="@+id/review_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/ic_stars"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RATE"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+
 
         <TextView
             android:id="@+id/welcome_text"
@@ -194,7 +259,7 @@
             android:layout_marginBottom="15dp"
             android:text="PLAY"
             android:textColor="#000"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 

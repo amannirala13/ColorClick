@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_color_click_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Promotion"></activity>
+        <activity android:name=".info"></activity>
+        <activity android:name=".Promotion" />
         <activity android:name=".PersonalHighScore" />
         <activity android:name=".WorldHighScore" />
         <activity android:name=".ShowScore" />

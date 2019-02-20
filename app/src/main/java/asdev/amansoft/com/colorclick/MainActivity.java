@@ -1,8 +1,9 @@
 package asdev.amansoft.com.colorclick;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,18 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,12 +30,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private Button playButton;
+    private Button playButton, infoButton, reviewButton;
     private DatabaseReference mDatabase;
     private TextView worldsHighestScoreText;
     private String worldsHighestScore, personalHighestScore;
@@ -58,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         mainBanner.loadAd(adRequest);
 
         playButton = findViewById(R.id.play_button);
+        infoButton = findViewById(R.id.info_button);
+        reviewButton = findViewById(R.id.review_button);
         worldsHighestScoreText = findViewById(R.id.world_highest_score);
         loadingContainer = findViewById(R.id.loading_container);
         mainContainer = findViewById(R.id.main_container);
@@ -88,10 +86,40 @@ public class MainActivity extends AppCompatActivity {
                         GameIntent.putExtra("WORLD_HIGHEST", worldsHighestScore);
                         GameIntent.putExtra("PERSONAL_HIGHEST",personalHighestScore);
                         startActivity(GameIntent);
-                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                     }
                 },700);
+
+
+            }
+        });
+
+
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent infoIntent = new Intent(MainActivity.this, info.class);
+                startActivity(infoIntent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+            }
+        });
+
+
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    Uri uri = Uri.parse("market://details?id="+getPackageName());
+                    Intent intent2 = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent2);
+                }catch (ActivityNotFoundException e)
+                {
+                    Uri uri = Uri.parse("http://play.google.com/store/apps/details?id="+getPackageName());
+                    Intent intent2 = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent2);
+                }
 
             }
         });

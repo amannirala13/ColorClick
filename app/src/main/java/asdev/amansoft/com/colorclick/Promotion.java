@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,8 +91,9 @@ public class Promotion extends AppCompatActivity {
 
     private void loadImage() {
 
-        Bitmap promotionContent = BitmapFactory.decodeFile(localFile.getPath());
-        promotionImage.setImageBitmap(promotionContent);
+       Bitmap promotionContent = BitmapFactory.decodeFile(localFile.getPath());
+       promotionImage.setImageBitmap(promotionContent);
+      //  Picasso.get().load(localFile.getPath()).fit().into(promotionImage);
 
     }
 
