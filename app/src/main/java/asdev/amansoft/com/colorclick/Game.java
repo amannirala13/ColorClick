@@ -456,6 +456,14 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
         if(timer!=null)
         timer.cancel();
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Snackbar canGoBackMessage = Snackbar.make(findViewById(R.id.game_screen), "Can't go back at this stage !", Snackbar.LENGTH_SHORT);
+        canGoBackMessage.show();
+    }
+
     private void resetTimer()
     {
         OUT_TIME = 2000;

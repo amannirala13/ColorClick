@@ -1,28 +1,30 @@
 package asdev.amansoft.com.colorclick;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -68,7 +70,6 @@ public class SplashScreen extends AppCompatActivity {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
 
-
                     SplashScreenAction();
                     StartUpFX.stop();
                     StartUpFX.reset();
@@ -97,13 +98,13 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 if (new check().isValidUser()) {
 
-                    Intent MainActivityIntent = new Intent(SplashScreen.this, MainActivity.class);
-                    startActivity(MainActivityIntent);
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                    finish();
+                        Intent ValidMainActivityIntent = new Intent(SplashScreen.this, Promotion.class);
+                        startActivity(ValidMainActivityIntent);
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        finish();
+                    }
 
-
-                } else {
+                else {
                     Intent MainActivityIntent = new Intent(SplashScreen.this, signin.class);
                     startActivity(MainActivityIntent);
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
