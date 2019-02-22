@@ -17,7 +17,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private int SCREEN_TIME_OUT = 1000;
+    private int SCREEN_TIME_OUT = 2000;
     private Boolean PERSISTENCE_STATE = false;
 
 
@@ -47,8 +47,6 @@ public class SplashScreen extends AppCompatActivity {
         StartUpFX.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-
-                SplashScreenAction();
                 StartUpFX.stop();
                 StartUpFX.reset();
 
@@ -67,14 +65,13 @@ public class SplashScreen extends AppCompatActivity {
             }
         },130);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SplashScreenAction();
+            }
+        },SCREEN_TIME_OUT);
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
 
     private void SplashScreenAction()
     {
