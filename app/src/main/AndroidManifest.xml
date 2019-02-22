@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="asdev.amansoft.com.colorclick">
 
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -7,18 +8,33 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/color_click_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_color_click_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".info"></activity>
-        <activity android:name=".Promotion" />
-        <activity android:name=".PersonalHighScore" />
-        <activity android:name=".WorldHighScore" />
-        <activity android:name=".ShowScore" />
-        <activity android:name=".FirstRun" />
+        <activity
+            android:name=".info"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Promotion"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PersonalHighScore"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WorldHighScore"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShowScore"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FirstRun"
+            android:theme="@style/Theme.Intro"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".signin"
             android:screenOrientation="portrait" />

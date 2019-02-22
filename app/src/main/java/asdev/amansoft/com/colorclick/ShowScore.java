@@ -33,7 +33,7 @@ public class ShowScore extends AppCompatActivity {
             public void onClick(View v) {
                 Intent MainActivityIntent = new Intent(ShowScore.this, MainActivity.class);
                 startActivity(MainActivityIntent);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             }
         });

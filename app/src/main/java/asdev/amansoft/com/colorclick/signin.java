@@ -143,9 +143,9 @@ public class signin extends AppCompatActivity {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadingDialog.show();
 
                 if (isValidPhone()) {
+                    LoadingDialog.show();
                     firebaseAuthWithGoogle(mAccount);
                 }
                 else
@@ -173,6 +173,7 @@ public class signin extends AppCompatActivity {
         LoadingDialog.show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 
     @Override
@@ -217,7 +218,7 @@ public class signin extends AppCompatActivity {
                                     {
 
                                         AlertDialog.Builder builder1 = new AlertDialog.Builder(signin.this);
-                                        builder1.setMessage("Welcome Back!\nUser already exists! You are about to overwrite previous data. Overwriting will not result in loss of scores.\nDo you want to overwrite previous data? " );
+                                        builder1.setMessage("Welcome Back!\nYou are about to overwrite your contact data\nDo you want to overwrite? " );
                                         builder1.setCancelable(false);
 
                                         builder1.setPositiveButton(
@@ -338,6 +339,7 @@ public class signin extends AppCompatActivity {
     private void goToMainActivity() {
         Intent MainActivityIntent = new Intent(signin.this, MainActivity.class);
         startActivity(MainActivityIntent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 
@@ -346,7 +348,7 @@ public class signin extends AppCompatActivity {
 
         Intent MainActivityIntent = new Intent(signin.this, FirstRun.class);
         startActivity(MainActivityIntent);
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 

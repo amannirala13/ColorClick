@@ -230,6 +230,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     //When the Game ends
     private void endGame() {
+        GAME_STATE=0;
         StopPointFX();
         StopGameTimerFX();
         if(timer!=null)
@@ -319,7 +320,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
         Intent endGameIntent = new Intent(Game.this, ShowScore.class);
         endGameIntent.putExtra("SCORE", score);
         startActivity(endGameIntent);
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
 
         // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
@@ -354,7 +355,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
             RANDOM_COLOR = R_COLOR.nextInt(4);
             RANDOM_NAME = R_NAME.nextInt(4);
             RANDOM_CASE = R_CASE.nextInt(3);
-        setAnswer(RANDOM_NAME);
+        setAnswer(RANDOM_COLOR);
         if(score>=100)
         {
             switch (RANDOM_CASE) {
@@ -401,8 +402,8 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
     }
 
     //Sets the answer according to the Random Colours and text generated
-    private void setAnswer(int random_name) {
-        answer = random_name;
+    private void setAnswer(int random_color) {
+        answer = random_color;
     }
 
     //Starts the Game timer
@@ -567,6 +568,8 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdLoaded() {
+        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "✔ You have a chance for extra 100 points for this turn!", Snackbar.LENGTH_LONG);
+        reward.show();
     }
 
     @Override
@@ -590,7 +593,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
         int InstantScore = rewardItem.getAmount();
         score = score+ InstantScore;
-        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "Wow ! You got 100 points !", Snackbar.LENGTH_SHORT);
+        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "Wow ! You got 100 points !", Snackbar.LENGTH_LONG);
         reward.show();
     }
 
@@ -601,7 +604,8 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
-        Toast.makeText(this, "Failed :"+ Integer.toString(i), Toast.LENGTH_SHORT).show();
+        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "❌ You don't have a chance for extra 100 points for this turn! Play safe!", Snackbar.LENGTH_LONG);
+        reward.show();
     }
 
     @Override

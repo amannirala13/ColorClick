@@ -123,7 +123,7 @@
             android:layout_above="@id/green_yellow_button_container"
             android:id="@+id/reb_blue_button_container"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:orientation="horizontal"
             android:layout_centerInParent="true"
             >
@@ -154,7 +154,7 @@
         <LinearLayout
             android:id="@+id/green_yellow_button_container"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:orientation="horizontal"
             android:layout_centerInParent="true"
             android:layout_alignParentBottom="true"

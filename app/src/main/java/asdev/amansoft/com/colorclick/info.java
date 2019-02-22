@@ -34,6 +34,7 @@ public class info extends AppCompatActivity {
                 Uri uri = Uri.parse("http://www.github.com/amannirala13");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -43,6 +44,7 @@ public class info extends AppCompatActivity {
                 Uri uri = Uri.parse("http://www.instagram.com/asdev_13");
                 Intent intent2 = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -50,6 +52,7 @@ public class info extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(info.this, MainActivity.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             }
         });

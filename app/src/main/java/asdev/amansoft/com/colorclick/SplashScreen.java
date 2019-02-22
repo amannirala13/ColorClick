@@ -42,27 +42,18 @@ public class SplashScreen extends AppCompatActivity {
             }
         },SCREEN_TIME_OUT);
 
-*/
+*/  final MediaPlayer StartUpFX = MediaPlayer.create(this, R.raw.startup);
+        StartUpFX.start();
+        StartUpFX.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
 
-    }
+                SplashScreenAction();
+                StartUpFX.stop();
+                StartUpFX.reset();
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-            final MediaPlayer StartUpFX = MediaPlayer.create(this, R.raw.startup);
-            StartUpFX.start();
-            StartUpFX.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-
-                    SplashScreenAction();
-                    StartUpFX.stop();
-                    StartUpFX.reset();
-
-                }
-            });
+            }
+        });
 
 
 
@@ -71,9 +62,17 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
 
                 YoYo.with(Techniques.BounceIn).duration(800).repeat(0).playOn(findViewById(R.id.splash_text));
-              //  YoYo.with(Techniques.BounceInUp).duration(500).repeat(0).playOn(findViewById(R.id.asdev_production_text));
+                YoYo.with(Techniques.BounceInUp).duration(1000).repeat(0).playOn(findViewById(R.id.asdev_pro_text));
+                //  YoYo.with(Techniques.BounceInUp).duration(500).repeat(0).playOn(findViewById(R.id.asdev_production_text));
             }
-        },100);
+        },130);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
 
@@ -87,14 +86,14 @@ public class SplashScreen extends AppCompatActivity {
 
                         Intent ValidMainActivityIntent = new Intent(SplashScreen.this, Promotion.class);
                         startActivity(ValidMainActivityIntent);
-                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                     }
 
                 else {
                     Intent MainActivityIntent = new Intent(SplashScreen.this, signin.class);
                     startActivity(MainActivityIntent);
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
 
                 }

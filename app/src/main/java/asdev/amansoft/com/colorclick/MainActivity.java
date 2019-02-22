@@ -16,11 +16,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,13 +47,27 @@ public class MainActivity extends AppCompatActivity {
     private int BackgroundMusicState = 0;
     private int BackPressedState = 0;
     private AdView mainBanner;
+    private InterstitialAd endGameAd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        endGameAd = new InterstitialAd(this);
+        endGameAd.setAdUnitId("ca-app-pub-3923725939846581/1004257384");
+
+
         mainBanner = findViewById(R.id.main_activity_banner);
         AdRequest adRequest = new AdRequest.Builder().build();
+        mainBanner.setAdListener(new AdListener()
+        {
+            @Override
+            public void onAdFailedToLoad(int errorCode)
+            {
+               // Toast.makeText(MainActivity.this, "Banner failed :"+ Integer.toString(errorCode), Toast.LENGTH_SHORT).show();
+            }
+        });
         mainBanner.loadAd(adRequest);
 
         playButton = findViewById(R.id.play_button);
@@ -75,24 +92,66 @@ public class MainActivity extends AppCompatActivity {
         playerName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
 
+
+        endGameAd.setAdListener(new AdListener()
+        {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+               // Toast.makeText(MainActivity.this, "Interstitial Failed  : "+ Integer.toString(errorCode), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                System.exit(0);
+            }
+
+            @Override
+            public void onAdClosed() {
+                Intent GameIntent = new Intent(MainActivity.this, Game.class);
+                GameIntent.putExtra("WORLD_HIGHEST", worldsHighestScore);
+                GameIntent.putExtra("PERSONAL_HIGHEST", personalHighestScore);
+                startActivity(GameIntent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+            }
+        });
+
+        endGameAd.loadAd(new AdRequest.Builder().build());
+
+
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YoYo.with(Techniques.SlideOutDown).duration(700).repeat(0).playOn(findViewById(R.id.main_container));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent GameIntent = new Intent(MainActivity.this, Game.class);
-                        GameIntent.putExtra("WORLD_HIGHEST", worldsHighestScore);
-                        GameIntent.putExtra("PERSONAL_HIGHEST",personalHighestScore);
-                        startActivity(GameIntent);
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        finish();
-                    }
-                },700);
+                    YoYo.with(Techniques.SlideOutDown).duration(700).repeat(0).playOn(findViewById(R.id.main_container));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(endGameAd.isLoaded()&& endGameAd!=null)
+                            {
+                                endGameAd.show();
+                            }
+                            else {
+                                Intent GameIntent = new Intent(MainActivity.this, Game.class);
+                                GameIntent.putExtra("WORLD_HIGHEST", worldsHighestScore);
+                                GameIntent.putExtra("PERSONAL_HIGHEST", personalHighestScore);
+                                startActivity(GameIntent);
+                                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                finish();
+                            }
+                        }
+                    },700);
+                }
 
-
-            }
         });
 
 
@@ -114,11 +173,13 @@ public class MainActivity extends AppCompatActivity {
                     Uri uri = Uri.parse("market://details?id="+getPackageName());
                     Intent intent2 = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent2);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }catch (ActivityNotFoundException e)
                 {
                     Uri uri = Uri.parse("http://play.google.com/store/apps/details?id="+getPackageName());
                     Intent intent2 = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent2);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
 
             }
@@ -134,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         if (BackgroundMusicState == 0) {
 
             BackgroundFx = MediaPlayer.create(this, R.raw.background_fx);
+            BackgroundFx.setLooping(true);
             new helper().PlayBackGroundMusic(BackgroundFx);
             BackgroundMusicState=1;
 
