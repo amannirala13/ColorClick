@@ -33,7 +33,6 @@
         <activity
             android:name=".FirstRun"
             android:theme="@style/Theme.Intro"
-            android:screenOrientation="portrait"
             />
         <activity
             android:name=".signin"
