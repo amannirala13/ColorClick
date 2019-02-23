@@ -67,7 +67,10 @@ public class FirstRun extends MaterialIntroActivity {
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(FirstRun.this, "Video Played", Toast.LENGTH_SHORT).show();
+                        Uri Viduri = Uri.parse("https://youtu.be/vPRXzWmK_h4");
+                        Intent Vidintent2 = new Intent(Intent.ACTION_VIEW, Viduri);
+                        startActivity(Vidintent2);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 }, "Play Video")
         );

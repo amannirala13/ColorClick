@@ -119,6 +119,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
 
         //Setting Welcome Text
+        YoYo.with(Techniques.Pulse).duration(500).repeat(0).playOn(findViewById(R.id.challenge_text));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -286,7 +287,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
         if(score>personalHighest) {
             scoreDatabase.child("Personal Score").child("HighestScore").setValue(score);
             scoreDatabase.child("Personal Score").child("HighestScore_Time").setValue(CURRENT_TIME.toString());
-            Toast.makeText(this, "   Congratulations!!! You broke your own Record 😍   ", Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "   Congratulations!!! You broke your own Record 😍   ", Toast.LENGTH_LONG).show();
 
 
             if (score > worldHighestScore) {
@@ -294,17 +295,22 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
                 mDatabase.child("World").child("World Highest").setValue(score);
                 mDatabase.child("World").child("Time").setValue(CURRENT_TIME.toString());
                 mDatabase.child("World").child("UserID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                Toast.makeText(this, "   Congratulations!!! You broke the world Record 😍   ", Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, "   Congratulations!!! You broke the world Record 😍   ", Toast.LENGTH_LONG).show();
 
                 //ToDO>>> Show world congo Screen
+                Intent endGameIntent = new Intent(Game.this, WorldHighScore.class);
+                endGameIntent.putExtra("SCORE", score);
+                startActivity(endGameIntent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
             }
-          /*  else
+           else
                 {
                     //ToDO>>>> Show Personal High Score Screen
-                    Intent endGameIntent = new Intent(Game.this, ShowScore.class);
+                    Intent endGameIntent = new Intent(Game.this, PersonalHighScore.class);
                     endGameIntent.putExtra("SCORE", score);
                     startActivity(endGameIntent);
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
             }
 
@@ -314,14 +320,14 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
             Intent endGameIntent = new Intent(Game.this, ShowScore.class);
             endGameIntent.putExtra("SCORE", score);
             startActivity(endGameIntent);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            finish();*/
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
         }
-        Intent endGameIntent = new Intent(Game.this, ShowScore.class);
+       /* Intent endGameIntent = new Intent(Game.this, ShowScore.class);
         endGameIntent.putExtra("SCORE", score);
         startActivity(endGameIntent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        finish();
+        finish();*/
 
         // Toast.makeText(this, "You Lost", Toast.LENGTH_SHORT).show();
         // GAME_STATE = 0;

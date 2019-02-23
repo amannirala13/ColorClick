@@ -133,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                     YoYo.with(Techniques.SlideOutDown).duration(700).repeat(0).playOn(findViewById(R.id.main_container));
+                YoYo.with(Techniques.FlipOutY).duration(900).repeat(0).playOn(findViewById(R.id.player_image));
+                YoYo.with(Techniques.TakingOff).duration(800).repeat(0).playOn(findViewById(R.id.winner_tag));
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -279,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 YoYo.with(Techniques.FlipInY).duration(1500).repeat(0).playOn(findViewById(R.id.player_image));
+                YoYo.with(Techniques.Landing).duration(900).repeat(0).playOn(findViewById(R.id.winner_tag));
                 YoYo.with(Techniques.BounceInUp).duration(1500).repeat(0).playOn(findViewById(R.id.main_container));
                 new Handler().postDelayed(new Runnable() {
                     @Override

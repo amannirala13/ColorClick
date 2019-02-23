@@ -82,9 +82,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/world_highest_score"
             android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
             android:layout_marginVertical="20dp"
-            android:layout_marginHorizontal="40dp"
-            android:layout_toEndOf="@id/play_button"
+            android:layout_marginRight="20dp"
             android:orientation="vertical">
 
             <Button
@@ -108,9 +108,9 @@
             android:id="@+id/review_button_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
+           android:layout_alignParentLeft="true"
             android:layout_below="@id/world_highest_score"
-            android:layout_toStartOf="@id/play_button"
+            android:layout_marginLeft="20dp"
             android:layout_centerInParent="true"
             android:orientation="vertical"
             android:layout_marginVertical="20dp"
