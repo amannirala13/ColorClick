@@ -250,11 +250,11 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
     private void ShowPromotionDialog() {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Game.this);
-        builder1.setMessage("Get instant 100 points for viewing this Ad." );
+        builder1.setMessage("Get extra points for viewing this Ad." );
         builder1.setCancelable(false);
 
         builder1.setPositiveButton(
-                "Get 100 points!",
+                "Get extra points!",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -574,7 +574,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdLoaded() {
-        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "✔ You have a chance for extra 100 points for this turn!", Snackbar.LENGTH_LONG);
+        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "✔ You have a chance for extra points for this turn!", Snackbar.LENGTH_LONG);
         reward.show();
     }
 
@@ -584,7 +584,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoStarted() {
-        Snackbar rewardInfo = Snackbar.make(findViewById(R.id.game_screen), "Watch till end to get 100 points !", Snackbar.LENGTH_SHORT);
+        Snackbar rewardInfo = Snackbar.make(findViewById(R.id.game_screen), "Watch till end to get extra points !", Snackbar.LENGTH_SHORT);
         rewardInfo.show();
     }
 
@@ -599,8 +599,8 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
         int InstantScore = rewardItem.getAmount();
         score = score+ InstantScore;
-        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "Wow ! You got 100 points !", Snackbar.LENGTH_LONG);
-        reward.show();
+      //  Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "Wow ! You got "+ Integer.toString(InstantScore)+" points !", Snackbar.LENGTH_LONG);
+      //  reward.show();
     }
 
     @Override
@@ -610,7 +610,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
-        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "❌ You don't have a chance for extra 100 points for this turn! Play safe!", Snackbar.LENGTH_LONG);
+        Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "❌ You don't have a chance for extra points for this turn! Play safe!", Snackbar.LENGTH_LONG);
         reward.show();
     }
 
