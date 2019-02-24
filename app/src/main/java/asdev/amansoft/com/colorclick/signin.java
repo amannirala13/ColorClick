@@ -245,7 +245,7 @@ public class signin extends AppCompatActivity {
                                     }
                                     else
                                     {
-                                        Toast.makeText(signin.this, "Creating user"+ FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(signin.this, "Welcome "+ FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
                                         createNewUser();
                                         LoadingDialog.dismiss();
                                     }
@@ -254,7 +254,7 @@ public class signin extends AppCompatActivity {
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
                                     LoadingDialog.dismiss();
-                                    Snackbar error = Snackbar.make(findViewById(R.id.signin_screen), "Failed to connect to Server !", Snackbar.LENGTH_SHORT);
+                                    Snackbar error = Snackbar.make(findViewById(R.id.signin_screen), "❌ Failed to connect to Server !", Snackbar.LENGTH_SHORT);
                                     error.show();
                                 }
                             });
@@ -262,7 +262,7 @@ public class signin extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Snackbar message = Snackbar.make(findViewById(R.id.signin_screen), "Oops! Something went wrong, not able to sign you up", Snackbar.LENGTH_LONG);
+                            Snackbar message = Snackbar.make(findViewById(R.id.signin_screen), "❌ Oops! Something went wrong, not able to sign you up", Snackbar.LENGTH_LONG);
                             message.show();
                             FirebaseAuth.getInstance().signOut();
                         }
