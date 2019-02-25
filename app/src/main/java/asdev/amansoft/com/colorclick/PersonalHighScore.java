@@ -65,7 +65,7 @@ public class PersonalHighScore extends AppCompatActivity {
             System.exit(0);}
         else
         {
-            Snackbar exitMessage = Snackbar.make(findViewById(R.id.world_highscore_screen), "Press again to exit !", Snackbar.LENGTH_SHORT);
+            Snackbar exitMessage = Snackbar.make(findViewById(R.id.personal_highscore_screen), "Press again to exit app !", Snackbar.LENGTH_SHORT);
             exitMessage.show();
         }
         new Handler().postDelayed(new Runnable() {
@@ -76,4 +76,6 @@ public class PersonalHighScore extends AppCompatActivity {
         }, 2000);
 
     }
+
+
 }

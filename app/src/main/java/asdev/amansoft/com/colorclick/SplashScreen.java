@@ -112,5 +112,8 @@ public class SplashScreen extends AppCompatActivity {
         PERSISTENCE_STATE =savedInstanceState.getBoolean("PERSISTENCE_STATE");
     }
 
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 }

@@ -83,7 +83,7 @@ public class ShowScore extends AppCompatActivity {
             System.exit(0);}
             else
         {
-            Snackbar exitMessage = Snackbar.make(findViewById(R.id.show_score_container), "Press again to exit !", Snackbar.LENGTH_SHORT);
+            Snackbar exitMessage = Snackbar.make(findViewById(R.id.show_score_container), "Press again to exit app !", Snackbar.LENGTH_SHORT);
             exitMessage.show();
         }
         new Handler().postDelayed(new Runnable() {
