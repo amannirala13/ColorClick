@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 public class info extends AppCompatActivity {
@@ -63,7 +65,38 @@ public class info extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        animateScreen();
+    }
+
+    private void animateScreen() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YoYo.with(Techniques.DropOut).duration(700).repeat(0).playOn(findViewById(R.id.cc_text));
+                YoYo.with(Techniques.BounceInUp).duration(1400).repeat(0).playOn(findViewById(R.id.info_screen));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        YoYo.with(Techniques.BounceIn).duration(300).repeat(0).playOn(findViewById(R.id.asdev_logo));
+                        YoYo.with(Techniques.BounceIn).duration(450).repeat(0).playOn(findViewById(R.id.asdev_title));
+                        YoYo.with(Techniques.BounceIn).duration(600).repeat(0).playOn(findViewById(R.id.dev_name_text));
+                        YoYo.with(Techniques.BounceIn).duration(750).repeat(0).playOn(findViewById(R.id.email_text));
+                        YoYo.with(Techniques.BounceIn).duration(900).repeat(0).playOn(findViewById(R.id.github_button));
+                        YoYo.with(Techniques.BounceIn).duration(1050).repeat(0).playOn(findViewById(R.id.instagram_button));
+                        YoYo.with(Techniques.BounceIn).duration(1200).repeat(0).playOn(findViewById(R.id.icon_sc_text));
+                        YoYo.with(Techniques.BounceIn).duration(1350).repeat(0).playOn(findViewById(R.id.back_button));
+                    }
+                },400);
+            }
+        },50);
+
+    }
+
+    @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        YoYo.with(Techniques.Wobble).duration(700).repeat(0).playOn(findViewById(R.id.back_button));
     }
 }

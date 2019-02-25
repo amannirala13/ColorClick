@@ -125,6 +125,7 @@
             />
 
         <TextView
+            android:id="@+id/icon_sc_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Icons from: https://www.flaticon.com "
