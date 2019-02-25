@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,6 +28,8 @@ public class info extends AppCompatActivity {
         asdevLogo = findViewById(R.id.asdev_logo);
 
         Picasso.get().load(R.drawable.asdev).fit().into(asdevLogo);
+
+        new helper().startBackgroundAnimation((RelativeLayout) findViewById(R.id.info_main_screen));
 
         githubButton.setOnClickListener(new View.OnClickListener() {
             @Override

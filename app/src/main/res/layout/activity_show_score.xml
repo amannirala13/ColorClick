@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/show_score_main_container"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,13 +8,24 @@
     android:background="@drawable/gradient_animation"
     tools:context=".ShowScore">
 
+    <com.google.android.gms.ads.AdView
+
+        android:id="@+id/gameover_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="ca-app-pub-3923725939846581/9918682816"
+        />
+
     <TextView
         android:id="@+id/show_score_Title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/show_score_container"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="31dp"
+        android:layout_below="@id/gameover_banner"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="29dp"
         android:text="Game Over"
         android:textAlignment="center"

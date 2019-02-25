@@ -9,9 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class ShowScore extends AppCompatActivity {
 
@@ -19,6 +23,7 @@ public class ShowScore extends AppCompatActivity {
     private Button continueButton;
     private int score;
     private int BackPressedState = 0;
+    private AdView GameOverBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,18 @@ public class ShowScore extends AppCompatActivity {
         setContentView(R.layout.activity_show_score);
         scoreText = findViewById(R.id.show_score_your_score);
         continueButton = findViewById(R.id.show_score_continue_button);
+
+        GameOverBanner = findViewById(R.id.gameover_banner);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        GameOverBanner.setAdListener(new AdListener()
+        {
+            @Override
+            public void onAdFailedToLoad(int errorCode)
+            {
+               //  Toast.makeText(ShowScore.this, "Banner failed :"+ Integer.toString(errorCode), Toast.LENGTH_SHORT).show();
+            }
+        });
+        GameOverBanner.loadAd(adRequest);
 
         new helper().startBackgroundAnimation((RelativeLayout) findViewById(R.id.show_score_main_container));
         continueButton.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +60,7 @@ public class ShowScore extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

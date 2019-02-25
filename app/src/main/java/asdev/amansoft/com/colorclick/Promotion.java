@@ -104,7 +104,7 @@ public class Promotion extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(Promotion.this, "Promoted Content", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Promotion.this, "Promoted Content", Toast.LENGTH_SHORT).show();
                         closeButton.setVisibility(View.VISIBLE);
                         loadingDialog.dismiss();
                         loadImage();

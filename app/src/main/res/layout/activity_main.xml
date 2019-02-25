@@ -23,21 +23,6 @@
         ads:adUnitId="ca-app-pub-3923725939846581/1342061510"
         />
 
-
-    <TextView
-        android:id="@+id/title_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAllCaps="true"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/main_activity_banner"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="#88ffffff"
-
-        />
-
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/player_image"
         android:layout_width="70dp"
