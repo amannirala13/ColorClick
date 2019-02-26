@@ -21,7 +21,7 @@ public class ShowScore extends AppCompatActivity {
 
     private TextView scoreText;
     private Button continueButton;
-    private int score;
+    private long score;
     private int BackPressedState = 0;
     private AdView GameOverBanner;
 
@@ -68,8 +68,8 @@ public class ShowScore extends AppCompatActivity {
             }
         }, 100);
 
-        score = getIntent().getIntExtra("SCORE", 0);
-        scoreText.setText(Integer.toString(score));
+        score = getIntent().getLongExtra("SCORE", 0);
+        scoreText.setText(Long.toString(score));
 
     }
 

@@ -96,7 +96,7 @@ public class FirstRun extends MaterialIntroActivity {
     @Override
     public void onFinish() {
         super.onFinish();
-        startActivity(new Intent(FirstRun.this, MainActivity.class));
+        startActivity(new Intent(FirstRun.this, Promotion.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
 

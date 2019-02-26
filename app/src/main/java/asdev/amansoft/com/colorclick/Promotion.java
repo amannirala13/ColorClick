@@ -12,9 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,11 +39,11 @@ public class Promotion extends AppCompatActivity {
     private ProgressDialog loadingDialog;
     private  File localFile = null;
     private ImageView promotionImage;
-    private Button closeButton;
+    private ImageButton closeButton;
     private int BackPressedState = 0;
     private DatabaseReference promoDB;
     private String promoLink;
-
+    private Boolean takeUnresponsiveAction = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +91,13 @@ public class Promotion extends AppCompatActivity {
             }
         });
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YoYo.with(Techniques.DropOut).duration(1000).repeat(0).playOn(findViewById(R.id.promotion_close_button));
+            }
+        },100);
+
     }
 
     @Override
@@ -105,6 +115,7 @@ public class Promotion extends AppCompatActivity {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                        // Toast.makeText(Promotion.this, "Promoted Content", Toast.LENGTH_SHORT).show();
+                        takeUnresponsiveAction = false;
                         closeButton.setVisibility(View.VISIBLE);
                         loadingDialog.dismiss();
                         loadImage();
@@ -114,6 +125,7 @@ public class Promotion extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Handle failed download
                 // ...
+                takeUnresponsiveAction = false;
                 loadingDialog.dismiss();
                 startActivity(new Intent(Promotion.this, MainActivity.class));
                 finish();
@@ -125,7 +137,19 @@ public class Promotion extends AppCompatActivity {
             public void run() {
                 loadingDialog.setMessage("Its taking longer than usual. Please check you Internet connection!");
             }
-        }, 48000);
+        }, 20000);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(takeUnresponsiveAction)
+                {
+                    Toast.makeText(Promotion.this, "Failed to load!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Promotion.this, MainActivity.class));
+                    finish();
+                }
+            }
+        },35000);
 
     }
 

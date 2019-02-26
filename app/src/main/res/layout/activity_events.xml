@@ -12,18 +12,18 @@
         android:layout_height="match_parent"
         android:background="#fff"
         />
-    <Button
+    <ImageButton
         android:id="@+id/promotion_close_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="30dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="10dp"
         android:text="Close"
+        android:layout_alignParentTop="true"
+       android:layout_alignParentEnd="true"
         android:textSize="15sp"
-        android:paddingHorizontal="30dp"
-        android:background="@drawable/round_black_button"
-        android:visibility="gone"
+        android:background="@drawable/circular_black_button"
+       android:src="@drawable/close_ic"
+        android:layout_centerInParent="true"
         />
 
 </RelativeLayout>

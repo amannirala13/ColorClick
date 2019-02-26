@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "7526901141",
+    "firebase_url": "https://colorclick13.firebaseio.com",
+    "project_id": "colorclick13",
+    "storage_bucket": "colorclick13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7526901141:android:1ddfe08b9bbe9f9c",
+        "android_client_info": {
+          "package_name": "asdev.amansoft.com.colorclick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7526901141-gkd8i9qf3nlt1f3sojr68t8doomdork6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "asdev.amansoft.com.colorclick",
+            "certificate_hash": "49fbdf0c961a63bca302e9539270d124179778e9"
+          }
+        },
+        {
+          "client_id": "7526901141-ll8905e9311qnm4k1hnj5hda44p7nmvu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "asdev.amansoft.com.colorclick",
+            "certificate_hash": "2342098a0f9da1a4157cc8d01bf4a1b9d3fdb6aa"
+          }
+        },
+        {
+          "client_id": "7526901141-s614l0oo3mnsmuv6ec3peu2d4q9nbhkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYjpZABm6wIqITfGcIyoIoFmYj_JEtgmU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7526901141-s614l0oo3mnsmuv6ec3peu2d4q9nbhkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-3923725939846581~5446112036"
+    }
+  ],
+  "configuration_version": "1"
+}

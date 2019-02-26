@@ -53,7 +53,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
     private String NAMES [] = {"Red", "Blue", "Green", "Yellow"};
     private int GAME_STATE = 0;
     private int answer;
-    private int score =0;
+    private long score =0;
   //  private Vibrator newChallengePing;
     private long worldHighestScore, personalHighest;
     private MediaPlayer gameTimerFX, pointFx, looseFX;
@@ -198,7 +198,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
             PlayPointFX();
             ++score;
             YoYo.with(Techniques.Shake).duration(200).repeat(0).playOn(findViewById(R.id.score));
-            scoreText.setText(Integer.toString(score));
+            scoreText.setText(Long.toString(score));
             updateGameScreen(score);
             startGame();
         }
@@ -208,7 +208,7 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
         }
     }
 
-    private void updateGameScreen(int score) {
+    private void updateGameScreen(long score) {
 
         if(score>200)
         {
@@ -598,6 +598,10 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
 
 
         int InstantScore = rewardItem.getAmount();
+        int RANDOM_SCORE_CUT;
+        final Random R_EXTRA_SCORE_CUT = new Random();
+        RANDOM_SCORE_CUT = R_EXTRA_SCORE_CUT.nextInt(500);
+        InstantScore = InstantScore - RANDOM_SCORE_CUT;
         score = score+ InstantScore;
       //  Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "Wow ! You got "+ Integer.toString(InstantScore)+" points !", Snackbar.LENGTH_LONG);
       //  reward.show();

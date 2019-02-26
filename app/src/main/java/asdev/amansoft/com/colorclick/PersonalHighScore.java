@@ -16,7 +16,7 @@ public class PersonalHighScore extends AppCompatActivity {
 
     private TextView scoreText;
     private Button continueBtn;
-    private int score;
+    private long score;
     private int BackPressedState = 0;
 
     @Override
@@ -41,8 +41,8 @@ public class PersonalHighScore extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        score = getIntent().getIntExtra("SCORE",0);
-        scoreText.setText(Integer.toString(score));
+        score = getIntent().getLongExtra("SCORE",0);
+        scoreText.setText(Long.toString(score));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
