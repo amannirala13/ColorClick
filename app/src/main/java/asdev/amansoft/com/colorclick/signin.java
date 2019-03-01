@@ -131,12 +131,12 @@ public class signin extends AppCompatActivity {
             }
         });*/
 
-        phoneText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                set_countrycode(phoneText);
-            }
-        });
+      phoneText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+          @Override
+          public void onFocusChange(View v, boolean hasFocus) {
+              set_countrycode(phoneText);
+          }
+      });
 
 
 
@@ -144,19 +144,10 @@ public class signin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (isValidPhone()) {
                     LoadingDialog.show();
                     firebaseAuthWithGoogle(mAccount);
-                }
-                else
-                {
-                    phoneText.requestFocus();
-                    Snackbar phoneMessage = Snackbar.make(findViewById(R.id.signin_screen),"Please enter a valid phone number eg: +1 00 000", Snackbar.LENGTH_LONG);
-                    phoneMessage.show();
-                }
-            }
+        }
         });
-
 
         signOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +177,7 @@ public class signin extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 mAccount = task.getResult(ApiException.class);
+                set_countrycode(phoneText);
                 updateSignedInUI();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately

@@ -80,7 +80,7 @@
                 android:id="@+id/phone_text"
                 android:layout_width="281dp"
                 android:layout_height="wrap_content"
-                android:hint="Phone number"
+                android:hint="Phone number (Optional)"
                 android:textColor="#000"
                 android:textColorHighlight="@color/colorPrimaryDark"
                 android:textSize="20sp"

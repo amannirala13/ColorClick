@@ -44,6 +44,8 @@ public class Promotion extends AppCompatActivity {
     private DatabaseReference promoDB;
     private String promoLink;
     private Boolean takeUnresponsiveAction = true;
+    private Boolean takingLonger = true;
+    private static Boolean isRunning = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +105,7 @@ public class Promotion extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        isRunning = true;
         loadingDialog.show();
         final StorageReference Events = FirebaseStorage.getInstance().getReference().child("Events/CCpromotion.png");
         try {
@@ -116,9 +119,13 @@ public class Promotion extends AppCompatActivity {
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                        // Toast.makeText(Promotion.this, "Promoted Content", Toast.LENGTH_SHORT).show();
                         takeUnresponsiveAction = false;
-                        closeButton.setVisibility(View.VISIBLE);
-                        loadingDialog.dismiss();
-                        loadImage();
+                        takingLonger = false;
+                        if(isRunning)
+                        {  closeButton.setVisibility(View.VISIBLE);
+                            loadingDialog.dismiss();
+                            loadImage();
+                        }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -135,6 +142,7 @@ public class Promotion extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(takingLonger)
                 loadingDialog.setMessage("Its taking longer than usual. Please check you Internet connection!");
             }
         }, 20000);
@@ -186,6 +194,11 @@ public class Promotion extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isRunning=false;
 
+    }
 }
 

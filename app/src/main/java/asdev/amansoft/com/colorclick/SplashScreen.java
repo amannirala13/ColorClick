@@ -18,13 +18,18 @@ import io.fabric.sdk.android.Fabric;
 public class SplashScreen extends AppCompatActivity {
 
     private int SCREEN_TIME_OUT = 2000;
-    private Boolean PERSISTENCE_STATE = false;
+    private static Boolean PERSISTENCE_STATE = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if(!PERSISTENCE_STATE)
+        {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            PERSISTENCE_STATE = true;
+        }
+
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash_screen);
         Fabric.with(this, new Crashlytics());
@@ -96,20 +101,6 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         }, SCREEN_TIME_OUT);
-    }
-
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if(savedInstanceState!=null)
-            savedInstanceState.putBoolean("PERSISTENCE_STATE", PERSISTENCE_STATE);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        PERSISTENCE_STATE =savedInstanceState.getBoolean("PERSISTENCE_STATE");
     }
 
     @Override

@@ -600,8 +600,9 @@ public class Game extends AppCompatActivity implements RewardedVideoAdListener {
         int InstantScore = rewardItem.getAmount();
         int RANDOM_SCORE_CUT;
         final Random R_EXTRA_SCORE_CUT = new Random();
-        RANDOM_SCORE_CUT = R_EXTRA_SCORE_CUT.nextInt(500);
+        RANDOM_SCORE_CUT = R_EXTRA_SCORE_CUT.nextInt(InstantScore);
         InstantScore = InstantScore - RANDOM_SCORE_CUT;
+        if(InstantScore>0)
         score = score+ InstantScore;
       //  Snackbar reward = Snackbar.make(findViewById(R.id.game_screen), "Wow ! You got "+ Integer.toString(InstantScore)+" points !", Snackbar.LENGTH_LONG);
       //  reward.show();
